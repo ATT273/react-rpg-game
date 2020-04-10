@@ -1,38 +1,119 @@
+* {
+  margin: 0;
+}
+
+/* MAIN APP */
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  padding-top: 20px;
   min-height: 100vh;
+  width: 100%;
+  background-color: #424242;
+}
+
+/* CREATE CHARACTER */
+.create-character {
+  margin: auto;
+  padding: 10px;
+  width: 70%;
+  height: 800px;
+  border-radius: 25px;
+  background-color: white;
+}
+
+.create-character__form {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.create-character__title h1 {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.character-stats__title {
+  margin-bottom: 15px;
+}
+
+.character-stats {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.character-stats .form-group {
+  margin-right: 25px;
+}
+
+.character-classes__container {
+  display: flex;
+  margin-bottom: 50px;
+}
+
+.character-classes__container .item {
+  width: 250px;
+  margin-right: 25px;
+  overflow: hidden;
+}
+
+.character-classes__container .item:last-child {
+  margin-right: 0;
+}
+
+.character-classes__container .item .image-container {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.character-classes__container .item .image-container img {
+  width: 100%;
+}
+
+
+/* COMMON CLASSES */
+.form-label {
+  /* display: inline-block; */
+  /* min-width: 140px; */
+  /* text-align: right; */
+  font-weight: bold;
+  color: black;
+  margin-right: 10px;
+}
+
+.form-input {
+  height: 1.5rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.stats-input {
+  width: 100px;
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.bg-green {
+  background-color: #b3dd9e!important;
+}
+
+.bg-red {
+  background-color: #d43445!important;
+}
+
+.btn-large {
+  width: 200px;
+  height: 2.5rem;
+}
+.error {
+  flex-basis: 100%;
+  color: red;
 }
