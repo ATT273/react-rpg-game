@@ -13,9 +13,9 @@ export class ClassesSelection extends Component {
                 <div className="image-container">
                     <img className='' src={image} alt='knight_class' />
                 </div>
-                <h3>{classInfo.name}</h3>
+                <h3><input type='radio' name='classes' value={classInfo.key} onChange={(e) => this.props.handleChange(e, 'radio')} />{classInfo.name}</h3>
                 <p>Bonus: +3 DEF</p>
-                <input type='radio' name='classes' value={classInfo.key} onChange={(e) => this.props.handleChange(e, 'radio')} />
+                
             </div>
         )
     }

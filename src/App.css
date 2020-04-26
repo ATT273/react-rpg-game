@@ -1,23 +1,28 @@
+:root {
+  --side-bar-bg: #aeaeae;
+  --app-bg: #424242;
+  --create-character-bg: #aeaeae;
+  --welcome-screen-bg: #2e027d;
+}
 * {
   margin: 0;
 }
 
 /* MAIN APP */
 .App {
+  display: flex;
   padding-top: 20px;
   min-height: 100vh;
   width: 100%;
-  background-color: #424242;
+  justify-content: space-around;
+  background-color: var(--app-bg);
 }
 
 /* CREATE CHARACTER */
 .create-character {
-  margin: auto;
-  padding: 10px;
-  width: 70%;
-  height: 800px;
-  border-radius: 25px;
-  background-color: white;
+  height: 100%;
+  width: 100%;
+  background-color: var(--create-character-bg);
 }
 
 .create-character__form {
@@ -70,8 +75,111 @@
   width: 100%;
 }
 
+/* WELCOME SCREEN */
+.welcome-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+  background-color: var(--welcome-screen-bg);
+  font-size: 2rem;
+  font-weight: bold;
+  color: whitesmoke;
+  box-sizing: border-box;
+}
 
+.welcome-screen .main-content {
+  flex-grow: 1;
+}
+/* CHARACTER DETAIL SIDEBAR */
+.character-detail__sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.character-detail__sidebar .stats {
+  display: flex;
+}
+
+.character-detail__sidebar .stats .player-avatar {
+  flex-basis: calc(40% - 15px);
+  margin-right: 15px;
+}
+
+.player-avatar img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.character-detail__sidebar .stats .player-stats {
+  flex-basis: calc(50% - 15px);
+  flex-grow: 1;
+}
+/* FIGHT SCREEN */
+.fight-screen {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.fight-screen .introduction {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 300px;
+  background-color: tomato;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+}
+
+.fight-screen .main-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: tomato;
+  opacity: 1;
+}
+
+.fighters-stats {
+  display: flex;
+}
+
+.fighters-stats .player,
+.fighters-stats .com {
+  width: calc(50% - 20px);
+  margin: 10px;
+}
+
+.fighters-stats .player img,
+.fighters-stats .com img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
 /* COMMON CLASSES */
+.main-screen {
+  /* margin: auto; */
+  width: 60%;
+  height: 800px;
+  max-width: 1000px;
+  border-radius: 25px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.side-bar {
+  width: calc((40% - 30px)/2);
+  height: 800px;
+  border-radius: 25px;
+  background-color: var(--side-bar-bg);
+  box-sizing: border-box;
+}
 .form-label {
   /* display: inline-block; */
   /* min-width: 140px; */
@@ -81,6 +189,10 @@
   margin-right: 10px;
 }
 
+.button-group {
+  display: flex;
+  justify-content: space-around;
+}
 .form-input {
   height: 1.5rem;
   padding: 5px 10px;
@@ -96,6 +208,7 @@
 }
 
 .btn {
+  padding: 10px 0;
   cursor: pointer;
   border: none;
   background: none;
@@ -116,4 +229,8 @@
 .error {
   flex-basis: 100%;
   color: red;
+}
+
+.w-200 {
+  width: 200px !important;
 }

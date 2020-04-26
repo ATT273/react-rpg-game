@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ClassesSelection from './ClassesSelection'
-import { classes } from '../data'
+import { classes } from '../../data'
 
 export class CreateCharacter extends Component {
     constructor() {
