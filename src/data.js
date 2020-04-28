@@ -22,6 +22,7 @@ export const classes = {
 
 export const enemies = {
     tiger : {
+        type: 'com',
         key: 'tiger',
         name: 'Tiger',
         image: tiger,
