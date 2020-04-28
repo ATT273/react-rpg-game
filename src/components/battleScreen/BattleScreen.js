@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 import FighterStatsBlock from './components/FighterStatsBlock'
 import PlayerActionsBlock from './components/PlayerActionsBlock'
+import PopUp from '../UIComponents/PopUp'
+
+import Game from '../../game'
 
 const intro = {
     transition: 'all 500ms ease-out'
 }
-export class FightScreen extends Component {
+
+class BattleScreen extends Component {
     constructor() {
         super()
 
@@ -35,46 +39,55 @@ export class FightScreen extends Component {
         })
     }
 
-    fighter =() => {
+    renderFighters = () => {
         const { player, com } = this.state
         return (
             <>
             <div className="main-content" style={{...intro, opacity: this.state.mainOpacity}} >
                     <FighterStatsBlock player={player} com={com} />
-                    <PlayerActionsBlock handleButtonClick={this.handleButtonCLick} />
+                    <PlayerActionsBlock handleAtkButtonClick={this.handleAtkButtonClick} />
                     <div className="battle-log"></div>
                 </div>
             </>
         )
     }
-    handleButtonCLick = () => {
-        console.log('button clicked')
+
+    handleAtkButtonClick = (attackerName, targetName) => {
+        
+        let attacker = this.state[attackerName]
+        let target = this.state[targetName]
+
+        const afterAtk = Game.normalAttack(attacker, target)
+
+        this.setState({
+            attacker: afterAtk.attacker,
+            com: afterAtk.target
+        })
+
+        const winStatus = Game.winCondition(attacker, target)
+
+        // console.log('after', afterAtk)
+        // if(afterAtk.type === 'player') {
+        //     this.handleAtkButtonClick(afterAtk.target, afterAtk.attacker)
+        // }
+        
+
+        console.log('check', winStatus)
     }
 
     render() {
         const { player, com } = this.state
-        console.log('pl', player)
-        console.log('coml', com)
+
         return (
             <div className='fight-screen'>
-                <div className="introduction" style={{...intro, display: this.state.display}} >
-                    <h3 className='introduction__title'>Prepare for Battle</h3>
-                    <div className="introduction__content">
-                        <div className="info">
-                            INFO
-                        </div>
-                        <div className="button-group">
-                            <button className='btn bg-green' onClick={this.handleReady}>READY!</button>
-                        </div>
-                    </div>
-                </div>
+                <PopUp title={'popup title'} display={this.state.display} handleReady={this.handleReady} />                
                 {
                     player !== null &&
-                    this.fighter()
+                    this.renderFighters()
                 }
             </div>
         )
     }
 }
 
-export default FightScreen
+export default BattleScreen

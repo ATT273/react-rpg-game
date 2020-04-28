@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CreateCharacter from './components/createCharacter/CreateCharacter'
 import WelcomeScreen from './components/welcomeScreen/WelcomeScreen'
-import FightScreen from './components/fightScreen/FightScreen'
+import BattleScreen from './components/battleScreen/BattleScreen'
 import CharacterStats from './components/sidebar/CharacterStats'
 
 import Game from './game'
@@ -19,6 +19,7 @@ class App extends Component {
       showFightScreen: false,
       showLootScreen: false,
       player: {
+        type: 'player',
         name: '',
         image: null,
         plClass: '',
@@ -30,14 +31,17 @@ class App extends Component {
           spd: 0
         }
       },
-      enemy: {}
+      enemy: {
+        type: 'com'
+      }
     }
   }
 
   createCharacter = (character) => {
     const { name, atk, def, spd, slClass } = character
-    let player = {}
+    let player = {...this.state.player}
     let stats = {...this.state.player.stats}
+    
     player.name = name
     player.image = player_img
     player.plClass = slClass
@@ -45,6 +49,7 @@ class App extends Component {
     stats.def = Number(def)
     stats.spd = Number(spd)
     player.stats = stats
+    
     this.setState({
       player,
       showWelcomeScreen: true,
@@ -55,12 +60,14 @@ class App extends Component {
   getEvent = () => {
 
   }
+
   getBattleData = () => {
-    const enemy = Game.getEnemy()
-    console.log(enemy)
+    const enemy = {...this.state.enemy, ...Game.getEnemy()}
+    
     this.setState({
       enemy
     })
+
     this.showFightScreen()
   }
 
@@ -73,6 +80,7 @@ class App extends Component {
 
   render () {
     const { showWelcomeScreen, showCreateCharacterScreen, showFightScreen, player, enemy } = this.state
+
     return (
       <div className="App">
         <aside className="side-bar character-detail__sidebar">
@@ -93,7 +101,7 @@ class App extends Component {
           }
           {
             showFightScreen &&
-            <FightScreen player={player} com={enemy} />
+            <BattleScreen player={player} com={enemy} />
           }
         </main>
         <aside className="side-bar help__sidebar"></aside>
