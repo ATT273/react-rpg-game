@@ -234,3 +234,14 @@
 .w-200 {
   width: 200px !important;
 }
+
+.com-turn {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 99;
+}

@@ -6,13 +6,13 @@ class Game {
     }
 
     static normalAttack(attacker, target) {
-        console.log('gameatt', attacker)
-        console.log('gametar', target)
         const dmgDealed = (attacker.stats.atk - target.stats.def) > 0 ? attacker.stats.atk - target.stats.def : 0
-        target.stats.hp = (target.stats.hp - dmgDealed) < 0 ? 0 : target.stats.hp - dmgDealed 
         let type = attacker.type
-        console.log('type', type)
-        return { attacker, target, type }
+        target.stats.hp = (target.stats.hp - dmgDealed) < 0 ? 0 : target.stats.hp - dmgDealed 
+        
+        const combatLog = `${attacker.name} deals ${dmgDealed} damage`
+
+        return { attacker, target, type, combatLog }
     }
 
     static winCondition(player, com) {
