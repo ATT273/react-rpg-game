@@ -3,6 +3,7 @@
   --app-bg: #424242;
   --create-character-bg: #aeaeae;
   --welcome-screen-bg: #2e027d;
+  --title-btm-border: #aeaeae;
 }
 * {
   margin: 0;
@@ -126,17 +127,6 @@
   height: 100%;
 }
 
-.fight-screen .introduction {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100px;
-  height: 300px;
-  background-color: tomato;
-  transform: translate(-50%, -50%);
-  z-index: 99;
-}
-
 .fight-screen .main-content {
   display: flex;
   flex-direction: column;
@@ -162,6 +152,23 @@
   height: 200px;
   object-fit: cover;
 }
+
+.battle-log {
+  margin: 0 auto;
+  padding: 10px;
+  width: 90%;
+  height: 200px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  overflow: auto;
+}
+
+.player-actions {
+  margin-bottom: 25px;
+}
+
+
 /* COMMON CLASSES */
 .main-screen {
   /* margin: auto; */
@@ -244,4 +251,36 @@
   transform: translate(-50%, -50%);
   background-color: white;
   z-index: 99;
+}
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: tomato;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  z-index: 99;
+}
+
+.popup__container {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.popup__title {
+  border-bottom: 1px solid var(--title-btm-border);
+}
+
+.popup__content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.popup__info {
+  flex-grow: 1;
 }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import FighterStatsBlock from './components/FighterStatsBlock'
 import PlayerActionsBlock from './components/PlayerActionsBlock'
-import PopUp from '../UIComponents/PopUp'
+import BattleLog from './components/BattleLog'
+import ReadyPopUp from './components/ReadyPopUp'
 
 import Game from '../../game'
 
@@ -19,6 +20,7 @@ class BattleScreen extends Component {
             mainOpacity: 0,
             player: {},
             com: {},
+            battleLogs: ['fafafa'],
             displayCombatLog: {
                 display: 'none'
             }
@@ -46,11 +48,10 @@ class BattleScreen extends Component {
         const { player, com } = this.state
         return (
             <>
-            <div className="main-content" style={{...intro, opacity: this.state.mainOpacity}} >
+            
                     <FighterStatsBlock player={player} com={com} />
-                    <PlayerActionsBlock handleAtkButtonClick={this.handleAtkButtonClick} />
-                    <div className="battle-log"></div>
-                </div>
+                    
+               
             </>
         )
     }
@@ -72,40 +73,69 @@ class BattleScreen extends Component {
             displayCombatLog
         })
     }
-    handleAtkButtonClick = (attackerName, targetName) => {
-        
-        let attacker = this.state[attackerName]
-        let target = this.state[targetName]
-
-        const afterAtk = Game.normalAttack(attacker, target)
-
-        this.setState({
-            [attackerName]: afterAtk.attacker,
-            [targetName]: afterAtk.target
-        })
-        console.log('cbLog', afterAtk.combatLog)
-        const winStatus = Game.winCondition(attacker, target)
+    checkWinCondition = (winStatus, attacker, target, afterAtk) => {
+        winStatus = Game.winCondition(attacker, target)
 
         if(winStatus.status === 1 && afterAtk.type === 'player') {
             this.showComTurn()
             setTimeout(() => {
                 this.hideComTurn()
                 this.handleAtkButtonClick('com', 'player')
-            }, 2000)
+            }, 1000)
+        }
+
+        if(winStatus.status === 0) {
+            this.setState({
+                battleLogs: [...this.state.battleLogs, winStatus.message]
+            })
+
+            this.savePlayerStats()
         }
     }
 
+    savePlayerStats = () => {
+        this.props.savePlayerStats(this.state.player)
+    }
+
+    handleAtkButtonClick = async (attackerName, targetName) => {
+        
+        let attacker = this.state[attackerName]
+        let target = this.state[targetName]
+        let winStatus = {}
+        const afterAtk = Game.normalAttack(attacker, target)
+
+        await this.setState({
+            [attackerName]: afterAtk.attacker,
+            [targetName]: afterAtk.target,
+            battleLogs: [...this.state.battleLogs, afterAtk.combatLog]
+        })
+        
+        await this.checkWinCondition(winStatus, this.state[attackerName], this.state[targetName], afterAtk)
+
+    }
+
     render() {
-        const { player, com, displayCombatLog } = this.state
+        const { player, displayCombatLog, battleLogs } = this.state
 
         return (
             <div className='fight-screen'>
-                <div className={'com-turn'}  style={{ ...displayCombatLog }}>Enemy turn</div>
-                <PopUp title={'popup title'} display={this.state.display} handleReady={this.handleReady} />                
+                <div className={'com-turn'}  style={{ ...displayCombatLog }}>Enemy turn ... </div>
+                <ReadyPopUp 
+                    title={'ready title'} 
+                    display={this.state.display} 
+                    size={'big'}
+                    renderButtons={true}
+                    renderInfo={true}
+                    handleReady={this.handleReady} />                
+                
+                <div className="main-content" style={{...intro, opacity: this.state.mainOpacity}} >
                 {
                     player !== null &&
                     this.renderFighters()
                 }
+                <PlayerActionsBlock handleAtkButtonClick={this.handleAtkButtonClick} />
+                <BattleLog battleLogs={battleLogs} />
+                </div>
                 
             </div>
         )
