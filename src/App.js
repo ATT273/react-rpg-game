@@ -7,7 +7,9 @@ import CharacterStats from './components/sidebar/CharacterStats'
 import Game from './game'
 
 import player_img from './images/player/player.png'
+import openningBackGround from './images/background/back_ground.jpg'
 import './App.css';
+import { motion, AnimatePresence } from 'framer-motion'
 
 class App extends Component {
 	constructor() {
@@ -18,6 +20,7 @@ class App extends Component {
 			showCreateCharacterScreen: true,
 			showFightScreen: false,
 			showLootScreen: false,
+			startGame: false,
 			player: {
 				type: 'player',
 				name: '',
@@ -33,8 +36,14 @@ class App extends Component {
 			},
 			enemy: {
 				type: 'com'
-			}
+			},
 		}
+	}
+
+	startGame = () => {
+		this.setState({
+			startGame: true,
+		})
 	}
 
 	createCharacter = (character) => {
@@ -58,7 +67,8 @@ class App extends Component {
 	}
 
 	getEvent = () => {
-
+		let id = Game.getEvent()
+		console.log('id', id)
 	}
 
 	getBattleData = () => {
@@ -83,36 +93,63 @@ class App extends Component {
 			player: data
 		})
 	}
+
 	render() {
-		const { showWelcomeScreen, showCreateCharacterScreen, showFightScreen, player, enemy } = this.state
+		const { startGame, showWelcomeScreen, showCreateCharacterScreen, showFightScreen, player, enemy } = this.state
 
 		return (
 			<div className="App">
-				<aside className="side-bar character-detail__sidebar">
+				<AnimatePresence>
 					{
-						player.name !== '' &&
-						<CharacterStats player={player} />
+						!startGame &&
+						<motion.div className="first_screen"
+							initial={{ opacity: 1 }}
+							transition={{ duration: 1 }}
+							exit={{ opacity: 0 }}>
+							<img className="bg_image" src={openningBackGround} alt="" />
+							<button className="btn_start btn" onClick={this.startGame}>Start!</button>
+						</motion.div>
 					}
 
-				</aside>
-				<main className="main-screen">
-					{
-						showCreateCharacterScreen &&
-						<CreateCharacter createCharacter={(character) => this.createCharacter(character)} />
-					}
-					{
-						showWelcomeScreen &&
-						<WelcomeScreen toFightScreen={this.getBattleData} />
-					}
-					{
-						showFightScreen &&
-						<BattleScreen 
-							player={player} 
-							com={enemy}
-							savePlayerStats={this.savePLayerStats} />
-					}
-				</main>
-				<aside className="side-bar help__sidebar"></aside>
+				</AnimatePresence>
+				{
+					startGame &&
+					<div className="game_screen">
+						<aside className="side-bar character-detail__sidebar">
+							{
+								player.name !== '' &&
+								<CharacterStats player={player} />
+							}
+
+						</aside>
+						<main className="main-screen">
+							{
+								showCreateCharacterScreen &&
+								<CreateCharacter createCharacter={(character) => this.createCharacter(character)} />
+							}
+							{
+								showWelcomeScreen &&
+								<AnimatePresence>
+									<motion.div className="container"
+										initial={{ opacity: 0 }}
+										transition={{ duration: 1 }}
+										animate={{ opacity: 1 }}>
+										<WelcomeScreen toFightScreen={this.getBattleData} />
+									</motion.div>
+								</AnimatePresence>
+							}
+							{
+								showFightScreen &&
+								<BattleScreen
+									player={player}
+									com={enemy}
+									savePlayerStats={this.savePLayerStats}
+									getEvent={this.getEvent} />
+							}
+						</main>
+						<aside className="side-bar help__sidebar"></aside>
+					</div>
+				}
 			</div>
 		);
 	}
