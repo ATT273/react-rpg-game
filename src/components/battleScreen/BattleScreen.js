@@ -3,12 +3,13 @@ import FighterStatsBlock from './components/FighterStatsBlock'
 import PlayerActionsBlock from './components/PlayerActionsBlock'
 import BattleLog from './components/BattleLog'
 import ReadyPopUp from './components/ReadyPopUp'
-
+import { motion, AnimatePresence } from 'framer-motion'
 import Game from '../../game'
 
-const intro = {
-    transition: 'all 500ms ease-out'
-}
+
+// const intro = {
+//     transition: 'all 500ms ease-out'
+// }
 
 class BattleScreen extends Component {
     constructor() {
@@ -20,10 +21,12 @@ class BattleScreen extends Component {
             mainOpacity: 0,
             player: {},
             com: {},
-            battleLogs: ['fafafa'],
+            battleLogs: ['start'],
             displayCombatLog: {
                 display: 'none'
-            }
+            },
+            showReadyPopup: true,
+            showBattleScreen: false,
         }
     }
 
@@ -40,7 +43,9 @@ class BattleScreen extends Component {
         this.setState({
             intrOpacity: 0,
             mainOpacity: 1,
-            display: 'none'
+            display: 'none',
+            showReadyPopup: false,
+            showBattleScreen: true,
         })
     }
 
@@ -48,17 +53,14 @@ class BattleScreen extends Component {
         const { player, com } = this.state
         return (
             <>
-            
-                    <FighterStatsBlock player={player} com={com} />
-                    
-               
+                <FighterStatsBlock player={player} com={com} />
             </>
         )
     }
 
     showComTurn = () => {
         const displayCombatLog= {
-            display: 'block'
+            display: 'flex'
         }
         this.setState({
             displayCombatLog
@@ -73,8 +75,9 @@ class BattleScreen extends Component {
             displayCombatLog
         })
     }
-    checkWinCondition = (winStatus, attacker, target, afterAtk) => {
-        winStatus = Game.winCondition(attacker, target)
+
+    checkWinCondition = (attacker, target, afterAtk) => {
+        let winStatus = Game.winCondition(attacker, target)
 
         if(winStatus.status === 1 && afterAtk.type === 'player') {
             this.showComTurn()
@@ -101,7 +104,7 @@ class BattleScreen extends Component {
         
         let attacker = this.state[attackerName]
         let target = this.state[targetName]
-        let winStatus = {}
+        // let winStatus = {}
         const afterAtk = Game.normalAttack(attacker, target)
 
         await this.setState({
@@ -110,33 +113,52 @@ class BattleScreen extends Component {
             battleLogs: [...this.state.battleLogs, afterAtk.combatLog]
         })
         
-        await this.checkWinCondition(winStatus, this.state[attackerName], this.state[targetName], afterAtk)
+        await this.checkWinCondition(this.state[attackerName], this.state[targetName], afterAtk)
 
     }
 
     render() {
-        const { player, displayCombatLog, battleLogs } = this.state
+        const { player, displayCombatLog, battleLogs, com, showReadyPopup, showBattleScreen } = this.state
 
         return (
             <div className='fight-screen'>
-                <div className={'com-turn'}  style={{ ...displayCombatLog }}>Enemy turn ... </div>
-                <ReadyPopUp 
-                    title={'ready title'} 
-                    display={this.state.display} 
-                    size={'big'}
-                    renderButtons={true}
-                    renderInfo={true}
-                    handleReady={this.handleReady} />                
-                
-                <div className="main-content" style={{...intro, opacity: this.state.mainOpacity}} >
+                <div className={'com-turn-popup'} style={{ ...displayCombatLog }} >Enemy turn ... </div>
+                <AnimatePresence>
                 {
-                    player !== null &&
-                    this.renderFighters()
+                    showReadyPopup &&
+                        <motion.div
+                            className="container"
+                            initial={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 1 }}>
+                            <ReadyPopUp
+                                title={'ready for the battle'}
+                                content={`${player.name} vs ${com.name}`}
+                                display={this.state.display}
+                                size={'big'}
+                                renderButtons={true}
+                                renderInfo={true}
+                                handleReady={this.handleReady} />
+                        </motion.div>
                 }
-                <PlayerActionsBlock handleAtkButtonClick={this.handleAtkButtonClick} />
-                <BattleLog battleLogs={battleLogs} />
-                </div>
-                
+                </AnimatePresence>
+                <AnimatePresence>
+                    {
+                        showBattleScreen &&
+
+                        <motion.div className="main-content"
+                            initial={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}>
+                            {
+                                player !== null &&
+                                this.renderFighters()
+                            }
+                            <PlayerActionsBlock handleAtkButtonClick={this.props.getEvent} />
+                            <BattleLog battleLogs={battleLogs} />
+                        </motion.div>
+
+                    }
+                </AnimatePresence>
             </div>
         )
     }

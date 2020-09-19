@@ -58,9 +58,10 @@ class PopUp extends Component {
      * @inheritdoc
      */
     renderPopUpInfo = () => {
+        const { content } = this.props
         return (
             <div className="popup__info">
-                <div>'popup info'</div>
+                <div>{content}</div>
             </div>
         )
     }

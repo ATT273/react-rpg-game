@@ -36,6 +36,9 @@ class Game {
         }
     }
 
+    static getEvent() {
+        return Math.floor(Math.random() * Math.floor(3));
+    }
 }
 
 export default Game
