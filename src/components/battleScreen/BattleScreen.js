@@ -27,6 +27,7 @@ class BattleScreen extends Component {
             },
             showReadyPopup: true,
             showBattleScreen: false,
+            showNextBtn: false,
         }
     }
 
@@ -89,7 +90,8 @@ class BattleScreen extends Component {
 
         if(winStatus.status === 0) {
             this.setState({
-                battleLogs: [...this.state.battleLogs, winStatus.message]
+                battleLogs: [...this.state.battleLogs, winStatus.message],
+                showNextBtn: true,
             })
 
             this.savePlayerStats()
@@ -118,7 +120,7 @@ class BattleScreen extends Component {
     }
 
     render() {
-        const { player, displayCombatLog, battleLogs, com, showReadyPopup, showBattleScreen } = this.state
+        const { player, displayCombatLog, battleLogs, com, showReadyPopup, showBattleScreen, showNextBtn } = this.state
 
         return (
             <div className='fight-screen'>
@@ -153,12 +155,17 @@ class BattleScreen extends Component {
                                 player !== null &&
                                 this.renderFighters()
                             }
-                            <PlayerActionsBlock handleAtkButtonClick={this.props.getEvent} />
+                            <PlayerActionsBlock handleAtkButtonClick={this.handleAtkButtonClick} />
                             <BattleLog battleLogs={battleLogs} />
+                            {
+                                showNextBtn &&
+                                <button className="btn bg-green w-200" style={{ margin: 'auto' }} onClick={this.props.getEvent}>Next</button>
+                            }
                         </motion.div>
 
                     }
                 </AnimatePresence>
+                
             </div>
         )
     }

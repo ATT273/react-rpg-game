@@ -2,6 +2,7 @@
   --side-bar-bg: #aeaeae;
   --app-bg: #424242;
   --create-character-bg: #aeaeae;
+  --default-bg: #aeaeae;
   --welcome-screen-bg: #2e027d;
   --title-btm-border: #aeaeae;
 }
@@ -214,7 +215,38 @@ body {
   margin-bottom: 25px;
 }
 
+/* LOOT SCREEN */
+.loot-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--default-bg);
+}
 
+.loot-screen .item-img {
+  border: 2px solid #000000;
+  border-radius: 5px;
+  background-color: #ffffff;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.loot-screen .item-img img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.loot-screen .item-detail {
+  margin-bottom: 10px;
+}
+
+.loot-screen .button-group {
+  width: 500px;
+}
 /* COMMON CLASSES */
 .main-screen {
   /* margin: auto; */
