@@ -1,8 +1,10 @@
 import { enemies, items } from './data'
 
 class Game {
-    static getEnemy() {
-        return enemies.tiger
+    static getEnemy(key) {
+        const filterEnemies = enemies.filter(enemy => enemy.key !== key)
+        const randomIdx = Math.floor(Math.random() * (filterEnemies.length));
+        return JSON.parse(JSON.stringify(filterEnemies[randomIdx]))
     }
 
     static normalAttack(attacker, target) {
@@ -42,6 +44,7 @@ class Game {
     static getEvent() {
         return Math.floor(Math.random() * Math.floor(2));
     }
+
 }
 
 export default Game

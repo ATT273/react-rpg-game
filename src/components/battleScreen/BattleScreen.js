@@ -21,6 +21,7 @@ class BattleScreen extends Component {
             mainOpacity: 0,
             player: {},
             com: {},
+            comKey: '',
             battleLogs: ['start'],
             displayCombatLog: {
                 display: 'none'
@@ -28,18 +29,31 @@ class BattleScreen extends Component {
             showReadyPopup: true,
             showBattleScreen: false,
             showNextBtn: false,
+            initState: {}
         }
     }
 
     componentDidMount() {
         const { player, com } = this.props
+        const initState = { ...this.state }
 
         this.setState({
             player,
-            com
+            com,
+            initState
         })
     }
-    
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.comKey !== state.comKey) {
+            return {
+                ...state.initState,
+                com: props.com,
+                player: props.player,
+                comKey: props.comKey
+            }
+        } else return null
+    }
     handleReady = () => {
         this.setState({
             intrOpacity: 0,
@@ -60,7 +74,7 @@ class BattleScreen extends Component {
     }
 
     showComTurn = () => {
-        const displayCombatLog= {
+        const displayCombatLog = {
             display: 'flex'
         }
         this.setState({
@@ -69,7 +83,7 @@ class BattleScreen extends Component {
     }
 
     hideComTurn = () => {
-        const displayCombatLog= {
+        const displayCombatLog = {
             display: 'none'
         }
         this.setState({
@@ -80,7 +94,7 @@ class BattleScreen extends Component {
     checkWinCondition = (attacker, target, afterAtk) => {
         let winStatus = Game.winCondition(attacker, target)
 
-        if(winStatus.status === 1 && afterAtk.type === 'player') {
+        if (winStatus.status === 1 && afterAtk.type === 'player') {
             this.showComTurn()
             setTimeout(() => {
                 this.hideComTurn()
@@ -88,7 +102,7 @@ class BattleScreen extends Component {
             }, 1000)
         }
 
-        if(winStatus.status === 0) {
+        if (winStatus.status === 0) {
             this.setState({
                 battleLogs: [...this.state.battleLogs, winStatus.message],
                 showNextBtn: true,
@@ -103,7 +117,7 @@ class BattleScreen extends Component {
     }
 
     handleAtkButtonClick = async (attackerName, targetName) => {
-        
+
         let attacker = this.state[attackerName]
         let target = this.state[targetName]
         // let winStatus = {}
@@ -114,7 +128,7 @@ class BattleScreen extends Component {
             [targetName]: afterAtk.target,
             battleLogs: [...this.state.battleLogs, afterAtk.combatLog]
         })
-        
+
         await this.checkWinCondition(this.state[attackerName], this.state[targetName], afterAtk)
 
     }
@@ -126,8 +140,8 @@ class BattleScreen extends Component {
             <div className='fight-screen'>
                 <div className={'com-turn-popup'} style={{ ...displayCombatLog }} >Enemy turn ... </div>
                 <AnimatePresence>
-                {
-                    showReadyPopup &&
+                    {
+                        showReadyPopup &&
                         <motion.div
                             className="container"
                             initial={{ opacity: 1 }}
@@ -142,7 +156,7 @@ class BattleScreen extends Component {
                                 renderInfo={true}
                                 handleReady={this.handleReady} />
                         </motion.div>
-                }
+                    }
                 </AnimatePresence>
                 <AnimatePresence>
                     {
@@ -165,7 +179,7 @@ class BattleScreen extends Component {
 
                     }
                 </AnimatePresence>
-                
+
             </div>
         )
     }

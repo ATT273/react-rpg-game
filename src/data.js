@@ -25,8 +25,8 @@ export const classes = {
     }
 }
 
-export const enemies = {
-    tiger : {
+export const enemies = [
+    {
         type: 'com',
         key: 'tiger',
         name: 'Tiger',
@@ -39,7 +39,7 @@ export const enemies = {
             spd: 3
         }
     },
-    orc : {
+    {
         type: 'com',
         key: 'orc',
         name: 'Orc',
@@ -51,8 +51,21 @@ export const enemies = {
             def: 3,
             spd: 3
         }
+    },
+    {
+        type: 'com',
+        key: 'dragon',
+        name: 'Dragon',
+        image: orc,
+        stats: {
+            hp: 30,
+            mp: 10,
+            atk: 5,
+            def: 5,
+            spd: 3
+        }
     }
-}
+]
 
 export const items = [
     {
@@ -78,7 +91,7 @@ export const items = [
 ]
 
 export const events = [
-    {id: 0, name: 'Battle'},
-    {id: 1, name: 'Loot'},
-    {id: 2, name: 'Shop'},
+    { id: 0, name: 'Battle' },
+    { id: 1, name: 'Loot' },
+    { id: 2, name: 'Shop' },
 ]

@@ -9,7 +9,7 @@ import WelcomeScreen from './components/welcomeScreen/WelcomeScreen';
 import Game from './game';
 import openningBackGround from './images/background/back_ground.jpg';
 import player_img from './images/player/player.png';
-
+import { enemies, items } from './data'
 class App extends Component {
 	constructor() {
 		super()
@@ -37,6 +37,7 @@ class App extends Component {
 			enemy: {
 				type: 'com'
 			},
+			currentEnemy: '',
 			loot: {
 
 			}
@@ -71,7 +72,6 @@ class App extends Component {
 
 	getEvent = () => {
 		let id = Game.getEvent()
-		console.log(`id`, id)
 		// let id  = 1
 		if (id === 0) {
 			this.getBattleData()
@@ -84,10 +84,12 @@ class App extends Component {
 
 	// battle screen
 	getBattleData = () => {
-		const enemy = { ...this.state.enemy, ...Game.getEnemy() }
+		const { currentEnemy } = this.state
+		const getEnemy = Object.assign({}, Game.getEnemy(currentEnemy))
 
 		this.setState({
-			enemy
+			enemy: { ...getEnemy },
+			currentEnemy: getEnemy.key
 		})
 
 		this.showFightScreen()
@@ -118,7 +120,6 @@ class App extends Component {
 	}
 
 	takeItem = (item) => {
-		console.log('item', item)
 		let { player } = this.state
 		if (player.items.length < 6) {
 			player.items = [...player.items, item]
@@ -126,7 +127,10 @@ class App extends Component {
 
 		this.setState({
 			player,
-		}, () => console.log('pla', this.state.player))
+		}, () => {
+			console.log('pla', this.state.player)
+			this.getEvent()
+		})
 	}
 
 	leaveItem = () => {
@@ -204,6 +208,7 @@ class App extends Component {
 										<BattleScreen
 											player={player}
 											com={enemy}
+											comKey={enemy.key}
 											savePlayerStats={this.savePLayerStats}
 											getEvent={this.getEvent} />
 									</motion.div>
