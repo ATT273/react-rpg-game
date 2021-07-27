@@ -1,16 +1,15 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { Component } from 'react';
-import CreateCharacter from './components/createCharacter/CreateCharacter'
-import WelcomeScreen from './components/welcomeScreen/WelcomeScreen'
-import BattleScreen from './components/battleScreen/BattleScreen'
-import CharacterStats from './components/sidebar/CharacterStats'
-
-import Game from './game'
-
-import player_img from './images/player/player.png'
-import openningBackGround from './images/background/back_ground.jpg'
 import './App.css';
-import { motion, AnimatePresence } from 'framer-motion'
-
+import BattleScreen from './components/battleScreen/BattleScreen';
+import CreateCharacter from './components/createCharacter/CreateCharacter';
+import LootScreen from './components/lootItemScreen/LootScreen';
+import CharacterStats from './components/sidebar/CharacterStats';
+import WelcomeScreen from './components/welcomeScreen/WelcomeScreen';
+import Game from './game';
+import openningBackGround from './images/background/back_ground.jpg';
+import player_img from './images/player/player.png';
+import { enemies, items } from './data'
 class App extends Component {
 	constructor() {
 		super()
@@ -32,11 +31,16 @@ class App extends Component {
 					atk: 0,
 					def: 0,
 					spd: 0
-				}
+				},
+				items: []
 			},
 			enemy: {
 				type: 'com'
 			},
+			currentEnemy: '',
+			loot: {
+
+			}
 		}
 	}
 
@@ -68,14 +72,24 @@ class App extends Component {
 
 	getEvent = () => {
 		let id = Game.getEvent()
-		console.log('id', id)
+		// let id  = 1
+		if (id === 0) {
+			this.getBattleData()
+		} else if (id === 1) {
+			this.getLootData()
+		} else if (id === 2) {
+			this.getShopData()
+		}
 	}
 
+	// battle screen
 	getBattleData = () => {
-		const enemy = { ...this.state.enemy, ...Game.getEnemy() }
+		const { currentEnemy } = this.state
+		const getEnemy = Object.assign({}, Game.getEnemy(currentEnemy))
 
 		this.setState({
-			enemy
+			enemy: { ...getEnemy },
+			currentEnemy: getEnemy.key
 		})
 
 		this.showFightScreen()
@@ -88,6 +102,51 @@ class App extends Component {
 		})
 	}
 
+	// loot screen
+	showLootScreen = () => {
+		this.setState({
+			showLootScreen: true,
+			showFightScreen: false,
+			showWelcomeScreen: false,
+		})
+	}
+
+	getLootData = () => {
+		const lootItem = Game.getLootItem()
+		this.setState({
+			loot: lootItem
+		})
+		this.showLootScreen()
+	}
+
+	takeItem = (item) => {
+		let { player } = this.state
+		if (player.items.length < 6) {
+			player.items = [...player.items, item]
+		}
+
+		this.setState({
+			player,
+		}, () => {
+			console.log('pla', this.state.player)
+			this.getEvent()
+		})
+	}
+
+	leaveItem = () => {
+		console.log('leave item')
+		this.getEvent()
+	}
+
+	// shop screen
+	showShopScreen = () => {
+
+	}
+
+	getShopData = () => {
+		console.log('get shop');
+	}
+
 	savePLayerStats = (data) => {
 		this.setState({
 			player: data
@@ -95,7 +154,8 @@ class App extends Component {
 	}
 
 	render() {
-		const { startGame, showWelcomeScreen, showCreateCharacterScreen, showFightScreen, player, enemy } = this.state
+		const { startGame, showWelcomeScreen, showCreateCharacterScreen, showFightScreen, showLootScreen,
+			player, enemy, loot } = this.state
 
 		return (
 			<div className="App">
@@ -134,17 +194,37 @@ class App extends Component {
 										initial={{ opacity: 0 }}
 										transition={{ duration: 1 }}
 										animate={{ opacity: 1 }}>
-										<WelcomeScreen toFightScreen={this.getBattleData} />
+										<WelcomeScreen toFightScreen={this.getEvent} />
 									</motion.div>
 								</AnimatePresence>
 							}
 							{
 								showFightScreen &&
-								<BattleScreen
-									player={player}
-									com={enemy}
-									savePlayerStats={this.savePLayerStats}
-									getEvent={this.getEvent} />
+								<AnimatePresence>
+									<motion.div className="container"
+										initial={{ opacity: 0 }}
+										transition={{ duration: 1 }}
+										animate={{ opacity: 1 }}>
+										<BattleScreen
+											player={player}
+											com={enemy}
+											comKey={enemy.key}
+											savePlayerStats={this.savePLayerStats}
+											getEvent={this.getEvent} />
+									</motion.div>
+								</AnimatePresence>
+
+							}
+							{
+								showLootScreen &&
+								<AnimatePresence>
+									<motion.div className="container"
+										initial={{ opacity: 0 }}
+										transition={{ duration: 1 }}
+										animate={{ opacity: 1 }}>
+										<LootScreen item={loot} takeItem={this.takeItem} leaveItem={this.leaveItem} />
+									</motion.div>
+								</AnimatePresence>
 							}
 						</main>
 						<aside className="side-bar help__sidebar"></aside>

@@ -47,10 +47,10 @@ export class CreateCharacter extends Component {
             })
             err = true
         } else if(Number(atk)  + Number(def)  + Number(spd) > 12) {
-            this.setState({
-                statsError: 'Can not assign more than 12 point to stats'
-            })
-            err = true
+            // this.setState({
+            //     statsError: 'Can not assign more than 12 point to stats'
+            // })
+            // err = true
         } else if(slClass === '') {
             this.setState({
                 classError: 'Please choose your class'
