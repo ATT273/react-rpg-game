@@ -1,4 +1,4 @@
-import { enemies, items } from './data'
+import { enemies, events, items } from './data'
 
 class Game {
     static getEnemy(key) {
@@ -41,8 +41,10 @@ class Game {
     static getLootItem() {
         return items[0]
     }
-    static getEvent() {
-        return Math.floor(Math.random() * Math.floor(2));
+    static getEvent(id) {
+        const filterEvents = events.filter(event => event.id !== id)
+        const randomIdx = Math.floor(Math.random() * (filterEvents.length));
+        return filterEvents[randomIdx].id
     }
 
 }

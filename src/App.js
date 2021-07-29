@@ -32,12 +32,20 @@ class App extends Component {
 					def: 0,
 					spd: 0
 				},
+				bonusStats: {
+					hp: 0,
+					mp: 0,
+					atk: 0,
+					def: 0,
+					spd: 0
+				},
 				items: []
 			},
 			enemy: {
 				type: 'com'
 			},
 			currentEnemy: '',
+			currentEvent: null,
 			loot: {
 
 			}
@@ -71,7 +79,11 @@ class App extends Component {
 	}
 
 	getEvent = () => {
-		let id = Game.getEvent()
+		const { currentEvent } = this.state
+		let id = Game.getEvent(currentEvent)
+		this.setState({
+			currentEvent: id
+		})
 		// let id  = 1
 		if (id === 0) {
 			this.getBattleData()
@@ -124,7 +136,20 @@ class App extends Component {
 		if (player.items.length < 6) {
 			player.items = [...player.items, item]
 		}
+		const bonusStats = {
+			atk: 0,
+			def: 0,
+			hp: 0,
+			spd: 0
+		}
+		player.items.forEach(item => {
+			bonusStats.atk += item.stats.atk !== undefined ? item.stats.atk : 0
+			bonusStats.def += item.stats.def !== undefined ? item.stats.def : 0
+			bonusStats.hp += item.stats.hp !== undefined ? item.stats.hp : 0
+			bonusStats.spd += item.stats.spd !== undefined ? item.stats.spd : 0
 
+		})
+		player.bonusStats = { ...bonusStats }
 		this.setState({
 			player,
 		}, () => {
