@@ -134,22 +134,24 @@ class App extends Component {
 	takeItem = (item) => {
 		let { player } = this.state
 		if (player.items.length < 6) {
-			player.items = [...player.items, item]
-		}
-		const bonusStats = {
-			atk: 0,
-			def: 0,
-			hp: 0,
-			spd: 0
-		}
-		player.items.forEach(item => {
-			bonusStats.atk += item.stats.atk !== undefined ? item.stats.atk : 0
-			bonusStats.def += item.stats.def !== undefined ? item.stats.def : 0
-			bonusStats.hp += item.stats.hp !== undefined ? item.stats.hp : 0
-			bonusStats.spd += item.stats.spd !== undefined ? item.stats.spd : 0
+			let checkDuplicate = false
+			player.items.forEach((pItem) => {
+				if (pItem.key === item.key) {
+					checkDuplicate = true
+					console.log('You \'ve already had this item')
+				}
+			})
+			if (!checkDuplicate) {
+				player.items = [...player.items, item]
 
-		})
-		player.bonusStats = { ...bonusStats }
+				player.bonusStats = { ...Game.getBonusStats(player.items) }
+			}
+
+		} else if (player.items.length > 6) {
+			console.log('Please remove 1 of your items')
+		}
+
+
 		this.setState({
 			player,
 		}, () => {
