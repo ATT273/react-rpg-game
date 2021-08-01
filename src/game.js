@@ -1,4 +1,4 @@
-import { enemies, items } from './data'
+import { enemies, events, items } from './data'
 
 class Game {
     static getEnemy(key) {
@@ -39,10 +39,32 @@ class Game {
     }
 
     static getLootItem() {
-        return items[0]
+        // const filterEvents = events.filter(event => event.id !== id)
+        const randomIdx = Math.floor(Math.random() * (items.length));
+        return items[randomIdx]
     }
-    static getEvent() {
-        return Math.floor(Math.random() * Math.floor(2));
+    static getEvent(id) {
+        const filterEvents = events.filter(event => event.id !== id)
+        const randomIdx = Math.floor(Math.random() * (filterEvents.length));
+        return filterEvents[randomIdx].id
+    }
+
+    static getBonusStats(itemList) {
+        const bonusStats = {
+            atk: 0,
+            def: 0,
+            hp: 0,
+            spd: 0
+        }
+        itemList.forEach(item => {
+            bonusStats.atk += item.stats.atk !== undefined ? item.stats.atk : 0
+            bonusStats.def += item.stats.def !== undefined ? item.stats.def : 0
+            bonusStats.hp += item.stats.hp !== undefined ? item.stats.hp : 0
+            bonusStats.spd += item.stats.spd !== undefined ? item.stats.spd : 0
+
+        })
+
+        return bonusStats
     }
 
 }

@@ -75,7 +75,8 @@ class BattleScreen extends Component {
 
     showComTurn = () => {
         const displayCombatLog = {
-            display: 'flex'
+            display: 'flex',
+            opacity: '0.1'
         }
         this.setState({
             displayCombatLog
@@ -135,10 +136,13 @@ class BattleScreen extends Component {
 
     render() {
         const { player, displayCombatLog, battleLogs, com, showReadyPopup, showBattleScreen, showNextBtn } = this.state
-
+        // style={{ ...displayCombatLog }}
         return (
             <div className='fight-screen'>
-                <div className={'com-turn-popup'} style={{ ...displayCombatLog }} >Enemy turn ... </div>
+                {/* <div className={'com-turn-popup-bg'} >
+                    <div className={'com-turn-popup'} style={{ ...displayCombatLog }}>Enemy turn ... </div>
+                </div> */}
+
                 <AnimatePresence>
                     {
                         showReadyPopup &&

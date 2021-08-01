@@ -32,12 +32,20 @@ class App extends Component {
 					def: 0,
 					spd: 0
 				},
+				bonusStats: {
+					hp: 0,
+					mp: 0,
+					atk: 0,
+					def: 0,
+					spd: 0
+				},
 				items: []
 			},
 			enemy: {
 				type: 'com'
 			},
 			currentEnemy: '',
+			currentEvent: null,
 			loot: {
 
 			}
@@ -71,7 +79,11 @@ class App extends Component {
 	}
 
 	getEvent = () => {
-		let id = Game.getEvent()
+		const { currentEvent } = this.state
+		let id = Game.getEvent(currentEvent)
+		this.setState({
+			currentEvent: id
+		})
 		// let id  = 1
 		if (id === 0) {
 			this.getBattleData()
@@ -122,8 +134,23 @@ class App extends Component {
 	takeItem = (item) => {
 		let { player } = this.state
 		if (player.items.length < 6) {
-			player.items = [...player.items, item]
+			let checkDuplicate = false
+			player.items.forEach((pItem) => {
+				if (pItem.key === item.key) {
+					checkDuplicate = true
+					console.log('You \'ve already had this item')
+				}
+			})
+			if (!checkDuplicate) {
+				player.items = [...player.items, item]
+
+				player.bonusStats = { ...Game.getBonusStats(player.items) }
+			}
+
+		} else if (player.items.length > 6) {
+			console.log('Please remove 1 of your items')
 		}
+
 
 		this.setState({
 			player,

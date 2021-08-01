@@ -20,13 +20,13 @@ export class CreateCharacter extends Component {
 
     renderClassesSelection = (classes) => {
         let classSelection = []
-        for(let item in classes) {
+        for (let item in classes) {
             classSelection.push(
                 <ClassesSelection
-                key={classes[item].key}
-                classInfo={classes[item]}
-                image={classes[item].image}
-                handleChange={(e, type) => this.handleUserInput(e, type)} />
+                    key={classes[item].key}
+                    classInfo={classes[item]}
+                    image={classes[item].image}
+                    handleChange={(e, type) => this.handleUserInput(e, type)} />
             )
         }
         return classSelection
@@ -36,29 +36,29 @@ export class CreateCharacter extends Component {
         e.preventDefault()
         const { name, atk, def, spd, slClass } = this.state
         let err = false
-        if(name === '') {
+        if (name === '') {
             this.setState({
                 nameError: 'Please enter your character`s name'
             })
             err = true
-        } else if(atk === '' ||  def === '' || spd === ''){
+        } else if (atk === '' || def === '' || spd === '') {
             this.setState({
                 statsError: 'Please enter your stats'
             })
             err = true
-        } else if(Number(atk)  + Number(def)  + Number(spd) > 12) {
-            // this.setState({
-            //     statsError: 'Can not assign more than 12 point to stats'
-            // })
-            // err = true
-        } else if(slClass === '') {
+        } else if (Number(atk) + Number(def) + Number(spd) > 12) {
+            this.setState({
+                statsError: 'Can not assign more than 12 point to stats'
+            })
+            err = true
+        } else if (slClass === '') {
             this.setState({
                 classError: 'Please choose your class'
             })
             err = true
         }
 
-        if(!err) {
+        if (!err) {
             this.props.createCharacter(this.state)
         } else {
             console.log('errrr')
@@ -68,7 +68,7 @@ export class CreateCharacter extends Component {
     handleUserInput = (e, type) => {
         switch (type) {
             case 'atk':
-                if(e.target.value < 0) {
+                if (e.target.value < 0) {
                     console.log('negative')
                     this.setState({
                         statsError: 'can not assign negative number to stats'
@@ -81,7 +81,7 @@ export class CreateCharacter extends Component {
                 }
                 break;
             case 'def':
-                if(e.target.value < 0) {
+                if (e.target.value < 0) {
                     this.setState({
                         statsError: 'can not assign negative number to stats'
                     })
@@ -93,7 +93,7 @@ export class CreateCharacter extends Component {
                 }
                 break;
             case 'spd':
-                if(e.target.value < 0) {
+                if (e.target.value < 0) {
                     this.setState({
                         statsError: 'can not assign negative number to stats'
                     })
@@ -114,11 +114,11 @@ export class CreateCharacter extends Component {
                     slClass: e.target.value
                 })
                 break;
-        
+
             default:
                 break;
         }
-        
+
     }
     render() {
         return (
@@ -149,7 +149,7 @@ export class CreateCharacter extends Component {
                             </div>
                             <p className='error'>{this.state.statsError}</p>
                         </div>
-                        
+
                         <div className='character-classes'>
                             <h3 className='character-classes__title'>Choose your class</h3>
                             <div className="character-classes__container">

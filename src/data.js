@@ -7,6 +7,7 @@ import orc from './images/enemies/orc.png'
 
 import rusty_sword from './images/items/Rusty_sword.png'
 import wooden_shield from './images/items/wood_shield.png'
+import leather_boots from './images/items/Leather_boot.png'
 export const classes = {
     knight: {
         key: 'knight',
@@ -87,11 +88,22 @@ export const items = [
         stats: {
             def: 3,
         }
+    },
+    {
+        id: 2,
+        image: leather_boots,
+        key: 'leather_boots',
+        name: 'Leather boots',
+        price: 200,
+        stats: {
+            def: 2,
+            spd: 1
+        }
     }
 ]
 
 export const events = [
     { id: 0, name: 'Battle' },
     { id: 1, name: 'Loot' },
-    { id: 2, name: 'Shop' },
+    // { id: 2, name: 'Shop' },
 ]
