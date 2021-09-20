@@ -60,6 +60,7 @@ class Game {
             bonusStats.atk += item.stats.atk !== undefined ? item.stats.atk : 0
             bonusStats.def += item.stats.def !== undefined ? item.stats.def : 0
             bonusStats.hp += item.stats.hp !== undefined ? item.stats.hp : 0
+            bonusStats.mp += item.stats.hp !== undefined ? item.stats.mp : 0
             bonusStats.spd += item.stats.spd !== undefined ? item.stats.spd : 0
 
         })

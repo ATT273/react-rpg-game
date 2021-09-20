@@ -6,6 +6,7 @@ import CreateCharacter from './components/createCharacter/CreateCharacter';
 import LootScreen from './components/lootItemScreen/LootScreen';
 import CharacterStats from './components/sidebar/CharacterStats';
 import WelcomeScreen from './components/welcomeScreen/WelcomeScreen';
+import IngameMenu from './components/UIComponents/IngameMenu';
 import Game from './game';
 import openningBackGround from './images/background/back_ground.jpg';
 import player_img from './images/player/player.png';
@@ -19,6 +20,7 @@ class App extends Component {
 			showCreateCharacterScreen: true,
 			showFightScreen: false,
 			showLootScreen: false,
+			isShowIngameMenu: false,
 			startGame: false,
 			player: {
 				type: 'player',
@@ -180,12 +182,30 @@ class App extends Component {
 		})
 	}
 
+	handleKeypress = (e) => {
+		const key = e.keyCode
+		switch (key) {
+			case 27:
+				this.setState({
+					isShowIngameMenu: !this.state.isShowIngameMenu
+				})
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	render() {
 		const { startGame, showWelcomeScreen, showCreateCharacterScreen, showFightScreen, showLootScreen,
-			player, enemy, loot } = this.state
+			player, enemy, loot, isShowIngameMenu } = this.state
 
 		return (
-			<div className="App">
+			<div className="App" onKeyDown={this.handleKeypress} tabIndex="0">
+				{
+					isShowIngameMenu &&
+					<IngameMenu closeMenu={this.handleKeypress} />
+				}
 				<AnimatePresence>
 					{
 						!startGame &&
@@ -201,7 +221,7 @@ class App extends Component {
 				</AnimatePresence>
 				{
 					startGame &&
-					<div className="game_screen">
+					<div className="game_screen" >
 						<aside className="side-bar character-detail__sidebar">
 							{
 								player.name !== '' &&

@@ -60,8 +60,9 @@ body {
   top: 0;
   left: 0;
   display: flex;
-  height: 900px;
+  height: 100%;
   width: 100%;
+  align-items: center;
   justify-content: space-around;
   background-color: var(--app-bg);
   z-index: 98;
@@ -160,7 +161,7 @@ body {
 .player-avatar img {
   width: 100%;
   object-fit: cover;
-  border-radius: 15px;
+  /* border-radius: 15px; */
 }
 
 .character-detail__sidebar .stats .player-stats {
@@ -207,7 +208,7 @@ body {
   height: 200px;
   background-color: white;
   border: 2px solid black;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   overflow: auto;
 }
 
@@ -228,7 +229,7 @@ body {
 
 .loot-screen .item-img {
   border: 2px solid #000000;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   background-color: #ffffff;
   padding: 5px;
   margin-bottom: 10px;
@@ -253,7 +254,7 @@ body {
   width: 60%;
   height: 800px;
   max-width: 1000px;
-  border-radius: 25px;
+  /* border-radius: 25px; */
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -261,7 +262,7 @@ body {
 .side-bar {
   width: calc((40% - 30px)/2);
   height: 800px;
-  border-radius: 25px;
+  /* border-radius: 25px; */
   background-color: var(--side-bar-bg);
   box-sizing: border-box;
 }
@@ -285,7 +286,7 @@ body {
 .form-input {
   height: 1.5rem;
   padding: 5px 10px;
-  border-radius: 5px;
+  /* border-radius: 5px; */
 }
 
 .form-group {
@@ -303,6 +304,9 @@ body {
   background: none;
 }
 
+.txt-green {
+  color: green;
+}
 .bg-green {
   background-color: #b3dd9e!important;
 }
@@ -325,13 +329,13 @@ body {
 }
 
 .com-turn-popup-bg {
-  /* position: absolute; */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: transparent;
-  cursor: none;
+  /* background-color: black; */
+  /* background-color: rgba(0,0,0,0.75); */
   pointer-events: none;
   z-index: 999;
 }
@@ -360,7 +364,7 @@ body {
   left: 50%;
   background-color: tomato;
   transform: translate(-50%, -50%);
-  border-radius: 10px;
+  /* border-radius: 10px; */
   z-index: 99;
 }
 
@@ -384,4 +388,55 @@ body {
 
 .popup__info {
   flex-grow: 1;
+}
+
+.ingame-menu__container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 997;
+}
+.ingame-menu__bg {
+  width: 100%;
+  height: 100vh;
+  /* background-color: royalblue; */
+  background: rgba(0, 0, 0, .4);
+  z-index: 998;
+}
+.ingame-menu__main {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 350px;
+  padding: 10px;
+  background-color: salmon;
+  z-index: 999;
+}
+
+.ingame-menu__title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.ingame-menu__options-grp {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-basis: 200px;
+  
+}
+
+.ingame-menu__option {
+  flex-basis: 50px;
+  background-color: burlywood;
+  cursor: pointer;
+  text-align: center;
 }
