@@ -29,7 +29,8 @@ class BattleScreen extends Component {
             showReadyPopup: true,
             showBattleScreen: false,
             showNextBtn: false,
-            initState: {}
+            initState: {},
+            showComTurn: false
         }
     }
 
@@ -79,7 +80,8 @@ class BattleScreen extends Component {
             opacity: '0.1'
         }
         this.setState({
-            displayCombatLog
+            displayCombatLog,
+            showComTurn: true
         })
     }
 
@@ -88,7 +90,8 @@ class BattleScreen extends Component {
             display: 'none'
         }
         this.setState({
-            displayCombatLog
+            displayCombatLog,
+            showComTurn: false
         })
     }
 
@@ -135,13 +138,11 @@ class BattleScreen extends Component {
     }
 
     render() {
-        const { player, displayCombatLog, battleLogs, com, showReadyPopup, showBattleScreen, showNextBtn } = this.state
+        const { player, displayCombatLog, battleLogs, com, showReadyPopup, showBattleScreen, showNextBtn, showComTurn } = this.state
         // style={{ ...displayCombatLog }}
         return (
             <div className='fight-screen'>
-                {/* <div className={'com-turn-popup-bg'} >
-                    <div className={'com-turn-popup'} style={{ ...displayCombatLog }}>Enemy turn ... </div>
-                </div> */}
+
 
                 <AnimatePresence>
                     {
@@ -169,11 +170,19 @@ class BattleScreen extends Component {
                         <motion.div className="main-content"
                             initial={{ opacity: 1 }}
                             exit={{ opacity: 0 }}>
+                            {/* {
+                                showComTurn &&
+                                <div className={'com-turn-popup-bg'} >
+                                    <div className={'com-turn-popup'} style={{ ...displayCombatLog }}>Enemy turn ... </div>
+                                </div>
+                            } */}
+
+                            {/* <div className='test-msg'>absadad</div> */}
                             {
                                 player !== null &&
                                 this.renderFighters()
                             }
-                            <PlayerActionsBlock handleAtkButtonClick={this.handleAtkButtonClick} />
+                            <PlayerActionsBlock handleAtkButtonClick={this.handleAtkButtonClick} showComTurn={showComTurn} />
                             <BattleLog battleLogs={battleLogs} />
                             {
                                 showNextBtn &&
