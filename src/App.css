@@ -66,12 +66,15 @@ body {
   justify-content: space-around;
   background-color: var(--app-bg);
   z-index: 98;
+  border-radius: 6px;
 }
 /* CREATE CHARACTER */
 .create-character {
   height: 100%;
   width: 100%;
-  background-color: var(--create-character-bg);
+  background-color: rgba(0,0,0,0.55);
+  border-radius: 6px;
+  /* background-color: var(--app-bg); */
 }
 
 .create-character__form {
@@ -262,7 +265,7 @@ body {
 .side-bar {
   width: calc((40% - 30px)/2);
   height: 800px;
-  /* border-radius: 25px; */
+  border-radius: 6px;
   background-color: var(--side-bar-bg);
   box-sizing: border-box;
 }
@@ -271,7 +274,7 @@ body {
   /* min-width: 140px; */
   /* text-align: right; */
   font-weight: bold;
-  color: black;
+  color: #fff;
   margin-right: 10px;
 }
 

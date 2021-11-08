@@ -1,24 +1,20 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import ClassesSelection from './ClassesSelection'
 import { classes } from '../../data'
+import { useSelector, useDispatch } from 'react-redux';
+import { updateStats } from '../../store/player/playerSlice';
 
-export class CreateCharacter extends Component {
-    constructor() {
-        super()
+const CreateCharacter = () => {
+    const dispatch = useDispatch();
+    const player = useSelector(state => state.player.player);
+    const [createPlayer, setCreatePlayer] = useState({});
+    const [errors, setErrors] = useState({});
 
-        this.state = {
-            name: '',
-            atk: null,
-            def: null,
-            spd: null,
-            slClass: '',
-            statsError: '',
-            nameError: '',
-            classError: ''
-        }
-    }
+    useEffect(() => {
+        setCreatePlayer(prevState => ({ ...prevState, ...player }));
+    }, [])
 
-    renderClassesSelection = (classes) => {
+    const renderClassesSelection = () => {
         let classSelection = []
         for (let item in classes) {
             classSelection.push(
@@ -26,145 +22,97 @@ export class CreateCharacter extends Component {
                     key={classes[item].key}
                     classInfo={classes[item]}
                     image={classes[item].image}
-                    handleChange={(e, type) => this.handleUserInput(e, type)} />
+                    handleChange={handleUserInput} />
             )
         }
         return classSelection
     }
 
-    handleCreateCharacter = (e) => {
+    const handleCreateCharacter = (e) => {
         e.preventDefault()
-        const { name, atk, def, spd, slClass } = this.state
-        let err = false
-        if (name === '') {
-            this.setState({
-                nameError: 'Please enter your character`s name'
-            })
+        // const { name, atk, def, spd, slClass } = this.state
+        let err = false;
+        if (createPlayer.name === '') {
+            setErrors(prevState => ({ ...prevState, nameError: 'Please enter your character`s name' }));
             err = true
-        } else if (atk === '' || def === '' || spd === '') {
-            this.setState({
-                statsError: 'Please enter your stats'
-            })
+        } else if (createPlayer.atk === 0 || createPlayer.def === 0 || createPlayer.spd === 0) {
+            setErrors(prevState => ({ ...prevState, statsError: 'Please enter your stats' }));
             err = true
-        } else if (Number(atk) + Number(def) + Number(spd) > 12) {
-            this.setState({
-                statsError: 'Can not assign more than 12 point to stats'
-            })
+        } else if (Number(createPlayer.atk) + Number(createPlayer.def) + Number(createPlayer.spd) > 12) {
+            setErrors(prevState => ({ ...prevState, statsError: 'Can not assign more than 12 point to stats' }));
             err = true
-        } else if (slClass === '') {
-            this.setState({
-                classError: 'Please choose your class'
-            })
+        } else if (createPlayer.plClass === '') {
+            setErrors(prevState => ({ ...prevState, classError: 'Please choose your class' }));
             err = true
         }
 
-        if (!err) {
-            this.props.createCharacter(this.state)
+        // if (!err) {
+        //     this.props.createCharacter(this.state)
+        // } else {
+        //     console.log('errrr')
+        // }
+    }
+
+    const handleUserInput = (e) => {
+
+        let statsError;
+        if (['atk', 'def', 'spd'].includes(e.target.name)) {
+            if (e.target.value < 0) {
+                statsError = 'can not assign negative number to stats';
+                setErrors(prevState => ({ ...prevState, statsError }));
+            } else {
+                console.log(`e.target.value`, e.target.value);
+                console.log(`e.target.name`, e.target.name);
+                setCreatePlayer(prevState => ({ ...prevState, stats: { ...prevState.stats, [e.target.name]: e.target.value } }));
+            }
         } else {
-            console.log('errrr')
+            console.log(`e.target.value`, e.target.value);
+            console.log(`e.target.name`, e.target.name);
+            setCreatePlayer(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
         }
     }
 
-    handleUserInput = (e, type) => {
-        switch (type) {
-            case 'atk':
-                if (e.target.value < 0) {
-                    console.log('negative')
-                    this.setState({
-                        statsError: 'can not assign negative number to stats'
-                    })
-                } else {
-                    this.setState({
-                        atk: e.target.value,
-                        statsError: ''
-                    })
-                }
-                break;
-            case 'def':
-                if (e.target.value < 0) {
-                    this.setState({
-                        statsError: 'can not assign negative number to stats'
-                    })
-                } else {
-                    this.setState({
-                        def: e.target.value,
-                        statsError: ''
-                    })
-                }
-                break;
-            case 'spd':
-                if (e.target.value < 0) {
-                    this.setState({
-                        statsError: 'can not assign negative number to stats'
-                    })
-                } else {
-                    this.setState({
-                        spd: e.target.value,
-                        statsError: ''
-                    })
-                }
-                break;
-            case 'name':
-                this.setState({
-                    name: e.target.value
-                })
-                break;
-            case 'radio':
-                this.setState({
-                    slClass: e.target.value
-                })
-                break;
-
-            default:
-                break;
-        }
-
-    }
-    render() {
-        return (
-            <div className='create-character'>
-                <div className='create-character__title'>
-                    <h1>CREATE CHARACTER</h1>
-                </div>
-                <div className='create-character__form'>
-                    <form onSubmit={this.handleCreateCharacter}>
-                        <div className='form-group'>
-                            <label className='form-label'>Character's Name</label>
-                            <input type='text' className='form-input' placeholder="Enter your character's name" onChange={(e) => this.handleUserInput(e, 'name')} />
-                        </div>
-                        <p className='error'>{this.state.nameError}</p>
-                        <div className='character-stats'>
-                            {/* <h3 className='character-stats__title'>Character Stats:</h3> */}
-                            <div className='form-group'>
-                                <label className='form-label'>Attack</label>
-                                <input type='number' className='form-input stats-input' placeholder="" onChange={(e) => this.handleUserInput(e, 'atk')} />
-                            </div>
-                            <div className='form-group'>
-                                <label className='form-label'>Defense</label>
-                                <input type='number' className='form-input stats-input' placeholder="" onChange={(e) => this.handleUserInput(e, 'def')} />
-                            </div>
-                            <div className='form-group'>
-                                <label className='form-label'>Speed</label>
-                                <input type='number' className='form-input stats-input' placeholder="" onChange={(e) => this.handleUserInput(e, 'spd')} />
-                            </div>
-                            <p className='error'>{this.state.statsError}</p>
-                        </div>
-
-                        <div className='character-classes'>
-                            <h3 className='character-classes__title'>Choose your class</h3>
-                            <div className="character-classes__container">
-                                {
-                                    this.renderClassesSelection(classes)
-                                }
-                            </div>
-                            <p className='error'>{this.state.classError}</p>
-                        </div>
-                        <button type='submit' className='btn bg-red btn-large'>CREATE</button>
-                    </form>
-                </div>
+    return (
+        <div className='create-character'>
+            <div className='create-character__title'>
+                <h1 style={{ color: '#fff' }}>CREATE CHARACTER</h1>
             </div>
-        )
-    }
+            <div className='create-character__form'>
+                <form onSubmit={handleCreateCharacter}>
+                    <div className='form-group'>
+                        <label className='form-label'>Character's Name</label>
+                        <input type='text' className='form-input' placeholder="Enter your character's name" name='name' onChange={handleUserInput} />
+                    </div>
+                    <p className='error'>{errors.nameError}</p>
+                    <div className='character-stats'>
+                        {/* <h3 className='character-stats__title'>Character Stats:</h3> */}
+                        <div className='form-group'>
+                            <label className='form-label'>Attack</label>
+                            <input type='number' className='form-input stats-input' name='atk' placeholder="" onChange={handleUserInput} />
+                        </div>
+                        <div className='form-group'>
+                            <label className='form-label'>Defense</label>
+                            <input type='number' className='form-input stats-input' name='def' placeholder="" onChange={handleUserInput} />
+                        </div>
+                        <div className='form-group'>
+                            <label className='form-label'>Speed</label>
+                            <input type='number' className='form-input stats-input' name='spd' placeholder="" onChange={handleUserInput} />
+                        </div>
+                        <p className='error'>{errors.statsError}</p>
+                    </div>
+
+                    <div className='character-classes'>
+                        <h3 className='character-classes__title' style={{ color: '#fff' }}>Choose your class</h3>
+                        <div className="character-classes__container">
+                            {renderClassesSelection(classes)}
+                        </div>
+                        <p className='error'>{errors.classError}</p>
+                    </div>
+                    <button type='submit' className='btn bg-red btn-large'>CREATE</button>
+                </form>
+            </div>
+        </div>
+    )
 }
 
 export default CreateCharacter
