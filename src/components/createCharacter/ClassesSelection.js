@@ -10,12 +10,13 @@ export class ClassesSelection extends Component {
         const { classInfo, image } = this.props
         return (
             <div className='item'>
+                <h3 style={{ textAlign: 'center', marginBottom: '10px', color: '#fff' }}>
+                    <input type='radio' name='plClass' value={classInfo.key} onChange={this.props.handleChange} />{classInfo.name}
+                </h3>
                 <div className="image-container">
                     <img className='' src={image} alt='knight_class' />
                 </div>
-                <h3 style={{ textAlign: 'center' }}>
-                    <input type='radio' name='classes' value={classInfo.key} onChange={(e) => this.props.handleChange(e, 'radio')} />{classInfo.name}
-                </h3>
+
             </div>
         )
     }

@@ -1,8 +1,8 @@
 :root {
-  --side-bar-bg: #aeaeae;
+  --side-bar-bg: rgba(0,0, 25, 0.35);
   --app-bg: #424242;
-  --create-character-bg: #aeaeae;
-  --default-bg: #aeaeae;
+  --create-character-bg: rgba(0,0, 25, 0.35);
+  --default-bg: rgba(0,0, 25, 0.35);
   --welcome-screen-bg: #2e027d;
   --title-btm-border: #aeaeae;
 }
@@ -66,12 +66,15 @@ body {
   justify-content: space-around;
   background-color: var(--app-bg);
   z-index: 98;
+  border-radius: 6px;
 }
 /* CREATE CHARACTER */
 .create-character {
   height: 100%;
   width: 100%;
   background-color: var(--create-character-bg);
+  border-radius: 6px;
+  /* background-color: var(--app-bg); */
 }
 
 .create-character__form {
@@ -180,12 +183,13 @@ body {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: tomato;
+  background-color: var(--default-bg);
   opacity: 1;
 }
 
 .fighters-stats {
   display: flex;
+  color: #fff;
 }
 
 .fighters-stats .player,
@@ -243,6 +247,7 @@ body {
 
 .loot-screen .item-detail {
   margin-bottom: 10px;
+  color: #fff;
 }
 
 .loot-screen .button-group {
@@ -262,8 +267,10 @@ body {
 .side-bar {
   width: calc((40% - 30px)/2);
   height: 800px;
-  /* border-radius: 25px; */
+  border-radius: 6px;
+  /* background-color: var(--side-bar-bg); */
   background-color: var(--side-bar-bg);
+  color: #fff;
   box-sizing: border-box;
 }
 .form-label {
@@ -271,7 +278,7 @@ body {
   /* min-width: 140px; */
   /* text-align: right; */
   font-weight: bold;
-  color: black;
+  color: #fff;
   margin-right: 10px;
 }
 
