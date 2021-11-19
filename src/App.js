@@ -10,14 +10,17 @@ import IngameMenu from './components/UIComponents/IngameMenu';
 import Game from './game';
 import openningBackGround from './images/background/back_ground.jpg';
 import DarkBG from './images/background/dark_bg.jpg';
-import player_img from './images/player/player.png';
 import { enemies, items } from './data'
 import { useSelector, useDispatch } from 'react-redux';
-import { updateStats, updateInventory } from './store/player/playerSlice';
+import { updateStats, updateInventory, updateBonusStats } from './store/player/playerSlice';
 
 const App = () => {
 	const [currentEvent, setCurrentEvent] = useState(null);
 	const [currentEnemy, setCurrentEnemy] = useState('');
+	const [enemy, setEnemy] = useState({ type: 'com' });
+	const [player, setPlayer] = useState({});
+
+
 	const [showWelcomeScreen, setShowWelcomeScreen] = useState(false);
 	const [showCreateCharacterScreen, setShowCreateCharacterScreen] = useState(true);
 	const [showFightScreen, setShowFightScreen] = useState(false);
@@ -26,12 +29,12 @@ const App = () => {
 	const [isStartGame, setIsStartGame] = useState(false);
 	const [loot, setLoot] = useState({});
 
-	const player = useSelector(state => state.player.player);
-	const enemy = {
-		type: 'com'
-	};
+	const dispatch = useDispatch();
+	const playerData = useSelector(state => state.player.player);
 
-
+	useEffect(() => {
+		setPlayer(playerData)
+	}, [playerData])
 
 	const startGame = () => {
 		setIsStartGame(true)
@@ -55,24 +58,32 @@ const App = () => {
 	const getBattleData = () => {
 		const getEnemy = Object.assign({}, Game.getEnemy(currentEnemy))
 
-		setCurrentEnemy(getEnemy.key)
+		setCurrentEnemy(getEnemy.key);
+		setEnemy(prevState => ({ ...prevState, ...getEnemy }))
 		onShowFightScreen()
+	}
+
+	const onShowWelcomeScreen = () => {
+		setShowWelcomeScreen(true);
+		setShowCreateCharacterScreen(false);
 	}
 
 	const onShowFightScreen = () => {
 		setShowWelcomeScreen(false);
-		showFightScreen(true);
+		setShowFightScreen(true);
+		setShowLootScreen(false);
 	}
 
 	// loot screen
 	const onShowLootScreen = () => {
-		showFightScreen(false);
-		showWelcomeScreen(false);
-		showLootScreen(true);
+		setShowFightScreen(false);
+		setShowWelcomeScreen(false);
+		setShowLootScreen(true);
 	}
 
 	const getLootData = () => {
 		const lootItem = Game.getLootItem()
+		setLoot(lootItem);
 		// setState({
 		// 	loot: lootItem
 		// })
@@ -89,9 +100,11 @@ const App = () => {
 				}
 			})
 			if (!checkDuplicate) {
-				player.items = [...player.items, item]
-
-				player.bonusStats = { ...Game.getBonusStats(player.items) }
+				const inventory = [...player.items, item];
+				const bonusStats = Game.getBonusStats(inventory);
+				dispatch(updateInventory([...inventory]));
+				dispatch(updateBonusStats(bonusStats));
+				// player.bonusStats = { ...Game.getBonusStats(player.items) }
 			}
 
 		} else if (player.items.length > 6) {
@@ -99,12 +112,6 @@ const App = () => {
 		}
 
 		getEvent()
-		// setState({
-		// 	player,
-		// }, () => {
-		// 	console.log('pla', state.player)
-
-		// })
 	}
 
 	const leaveItem = () => {
@@ -119,12 +126,6 @@ const App = () => {
 
 	const getShopData = () => {
 		console.log('get shop');
-	}
-
-	const savePLayerStats = (data) => {
-		// setState({
-		// 	player: data
-		// })
 	}
 
 	const handleKeypress = (e) => {
@@ -172,7 +173,7 @@ const App = () => {
 					<main className="main-screen">
 						{
 							showCreateCharacterScreen &&
-							<CreateCharacter />
+							<CreateCharacter startGame={onShowWelcomeScreen} />
 						}
 						{
 							showWelcomeScreen &&
@@ -194,9 +195,8 @@ const App = () => {
 									animate={{ opacity: 1 }}>
 									<BattleScreen
 										player={player}
-										com={enemy}
+										comData={enemy}
 										comKey={enemy.key}
-										savePlayerStats={savePLayerStats}
 										getEvent={getEvent} />
 								</motion.div>
 							</AnimatePresence>

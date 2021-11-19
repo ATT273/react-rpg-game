@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react'
 import ClassesSelection from './ClassesSelection'
 import { classes } from '../../data'
 import { useSelector, useDispatch } from 'react-redux';
-import { updateStats } from '../../store/player/playerSlice';
+import { createCharacter } from '../../store/player/playerSlice';
 
-const CreateCharacter = () => {
+const CreateCharacter = ({ startGame }) => {
     const dispatch = useDispatch();
     const player = useSelector(state => state.player.player);
     const [createPlayer, setCreatePlayer] = useState({});
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        setCreatePlayer(prevState => ({ ...prevState, ...player }));
-    }, [])
+        const initPlayer = Object.assign({}, player);
+        setCreatePlayer(prevState => ({ ...prevState, ...initPlayer }));
+
+    }, [player])
 
     const renderClassesSelection = () => {
         let classSelection = []
@@ -29,8 +31,6 @@ const CreateCharacter = () => {
     }
 
     const handleCreateCharacter = (e) => {
-        e.preventDefault()
-        // const { name, atk, def, spd, slClass } = this.state
         let err = false;
         if (createPlayer.name === '') {
             setErrors(prevState => ({ ...prevState, nameError: 'Please enter your character`s name' }));
@@ -46,29 +46,27 @@ const CreateCharacter = () => {
             err = true
         }
 
-        // if (!err) {
-        //     this.props.createCharacter(this.state)
-        // } else {
-        //     console.log('errrr')
-        // }
+        if (!err) {
+            dispatch(createCharacter(createPlayer));
+            startGame();
+        } else {
+            console.log('errrr')
+        }
     }
 
     const handleUserInput = (e) => {
-
         let statsError;
-        if (['atk', 'def', 'spd'].includes(e.target.name)) {
-            if (e.target.value < 0) {
+        const name = e.target.name;
+        const value = e.target.value;
+        if (['atk', 'def', 'spd'].includes(name)) {
+            if (Number(e.target.value) < 0) {
                 statsError = 'can not assign negative number to stats';
                 setErrors(prevState => ({ ...prevState, statsError }));
             } else {
-                console.log(`e.target.value`, e.target.value);
-                console.log(`e.target.name`, e.target.name);
-                setCreatePlayer(prevState => ({ ...prevState, stats: { ...prevState.stats, [e.target.name]: e.target.value } }));
+                if (e.target !== null) setCreatePlayer(prevState => ({ ...prevState, stats: { ...prevState.stats, [name]: Number(value) } }));
             }
         } else {
-            console.log(`e.target.value`, e.target.value);
-            console.log(`e.target.name`, e.target.name);
-            setCreatePlayer(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
+            if (e.target !== null) setCreatePlayer(prevState => ({ ...prevState, [name]: value }));
         }
     }
 
@@ -78,7 +76,8 @@ const CreateCharacter = () => {
                 <h1 style={{ color: '#fff' }}>CREATE CHARACTER</h1>
             </div>
             <div className='create-character__form'>
-                <form onSubmit={handleCreateCharacter}>
+                <div>
+                    {/* <form onSubmit={handleCreateCharacter}> */}
                     <div className='form-group'>
                         <label className='form-label'>Character's Name</label>
                         <input type='text' className='form-input' placeholder="Enter your character's name" name='name' onChange={handleUserInput} />
@@ -108,8 +107,10 @@ const CreateCharacter = () => {
                         </div>
                         <p className='error'>{errors.classError}</p>
                     </div>
-                    <button type='submit' className='btn bg-red btn-large'>CREATE</button>
-                </form>
+                    <button type='submit' className='btn bg-red btn-large' onClick={handleCreateCharacter}>CREATE</button>
+                    {/* </form> */}
+                </div>
+
             </div>
         </div>
     )

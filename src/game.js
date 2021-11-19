@@ -8,7 +8,10 @@ class Game {
     }
 
     static normalAttack(attacker, target) {
-        const dmgDealed = (attacker.stats.atk - target.stats.def) > 0 ? attacker.stats.atk - target.stats.def : 0
+        const bonusStats = this.getBonusStats(attacker.type === 'player' ? attacker.items : target.items);
+        const atkAttacker = attacker.type === 'player' ? (attacker.stats.atk + bonusStats.atk) : attacker.stats.atk;
+        const defTarget = target.type === 'player' ? (target.stats.def + bonusStats.def) : target.stats.def;
+        const dmgDealed = (atkAttacker - defTarget) > 0 ? atkAttacker - defTarget : 0
         let type = attacker.type
         target.stats.hp = (target.stats.hp - dmgDealed) < 0 ? 0 : target.stats.hp - dmgDealed
 
@@ -60,7 +63,7 @@ class Game {
             bonusStats.atk += item.stats.atk !== undefined ? item.stats.atk : 0
             bonusStats.def += item.stats.def !== undefined ? item.stats.def : 0
             bonusStats.hp += item.stats.hp !== undefined ? item.stats.hp : 0
-            bonusStats.mp += item.stats.hp !== undefined ? item.stats.mp : 0
+            bonusStats.mp += item.stats.mp !== undefined ? item.stats.mp : 0
             bonusStats.spd += item.stats.spd !== undefined ? item.stats.spd : 0
 
         })

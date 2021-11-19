@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import player_img from '../../images/player/player.png';
 
 export const playerSlice = createSlice({
     name: 'player',
@@ -6,11 +7,13 @@ export const playerSlice = createSlice({
         player: {
             type: 'player',
             name: '',
-            image: null,
+            image: player_img,
             plClass: '',
             stats: {
                 hp: 100,
                 mp: 100,
+                maxHP: 100,
+                maxMP: 100,
                 atk: 0,
                 def: 0,
                 spd: 0
@@ -27,22 +30,25 @@ export const playerSlice = createSlice({
     },
     reducers: {
         createCharacter: (state, action) => {
-
+            state.player = action.payload;
         },
         updateStats: (state, action) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.value += 1
+            const newStats = action.payload;
+            state.player = { ...state.player, stats: { ...newStats } };
+        },
+        updateBonusStats: (state, action) => {
+            const newBonusStats = action.payload;
+            state.player = { ...state.player, bonusStats: { ...newBonusStats } };
         },
         updateInventory: (state, action) => {
-            state.value -= 1
+            const newItems = action.payload;
+
+            state.player = { ...state.player, items: [...newItems] };
         },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { updateStats, updateInventory } = playerSlice.actions
+export const { updateStats, updateInventory, createCharacter, updateBonusStats } = playerSlice.actions
 
 export default playerSlice.reducer
