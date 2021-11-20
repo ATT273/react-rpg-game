@@ -118,14 +118,12 @@ const BattleScreen = ({ getEvent, comData }) => {
         //     //     handleAtkButtonClick('com', 'player')
         //     // }, 1000)
         // }
-
         if (winStatus.status === 0) {
-            if (attackerName === 'player')
-                setState(prev => ({
-                    ...prev,
-                    battleLogs: [...state.battleLogs, winStatus.message],
-                    showNextBtn: true,
-                }))
+            setState(prev => ({
+                ...prev,
+                battleLogs: [...state.battleLogs, winStatus.message],
+                showNextBtn: true,
+            }))
         }
     }
 

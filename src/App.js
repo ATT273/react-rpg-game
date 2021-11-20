@@ -91,25 +91,33 @@ const App = () => {
 	}
 
 	const takeItem = (item) => {
-		if (player.items.length < 6) {
-			let checkDuplicate = false
-			player.items.forEach((pItem) => {
-				if (pItem.key === item.key) {
-					checkDuplicate = true
-					console.log('You \'ve already had this item')
-				}
-			})
-			if (!checkDuplicate) {
-				const inventory = [...player.items, item];
-				const bonusStats = Game.getBonusStats(inventory);
-				dispatch(updateInventory([...inventory]));
-				dispatch(updateBonusStats(bonusStats));
-				// player.bonusStats = { ...Game.getBonusStats(player.items) }
-			}
+		const _takeItems = Game.takeItem(item, player.items);
 
-		} else if (player.items.length > 6) {
-			console.log('Please remove 1 of your items')
+		if (_takeItems.duplicate) {
+			alert(_takeItems.message)
+		} else {
+			const bonusStats = Game.getBonusStats(_takeItems.newInventory);
+			dispatch(updateInventory([..._takeItems.newInventory]));
+			dispatch(updateBonusStats(bonusStats));
+			console.log(_takeItems.message);
 		}
+		// if (player.items.length < 6) {
+		// 	let checkDuplicate = false
+		// 	player.items.forEach((pItem) => {
+		// 		if (pItem.key === item.key) {
+		// 			checkDuplicate = true
+		// 			console.log('You \'ve already had this item')
+		// 		}
+		// 	})
+		// 	if (!checkDuplicate) {
+		// 		const inventory = [...player.items, item];
+
+		// 		// player.bonusStats = { ...Game.getBonusStats(player.items) }
+		// 	}
+
+		// } else if (player.items.length > 6) {
+		// 	console.log('Please remove 1 of your items')
+		// }
 
 		getEvent()
 	}
