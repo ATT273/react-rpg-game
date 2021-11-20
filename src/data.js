@@ -2,9 +2,10 @@ import knight from './images/classes/knight.jpg'
 import warrior from './images/classes/warrior.jpg'
 import assassin from './images/classes/assassin.jpg'
 
-import tiger from './images/enemies/tiger.png'
+import tiger from './images/enemies/tiger.webp'
 import orc from './images/enemies/orc.png'
 import dragon from './images/enemies/dragon.jpg'
+import Slime from './images/enemies/Slime_puddle.png'
 
 import RustySword from './images/items/Rusty_sword.png'
 import WoodenShield from './images/items/wood_shield.png'
@@ -36,12 +37,12 @@ export const enemies = [
         name: 'Tiger',
         image: tiger,
         stats: {
-            hp: 10,
-            maxHP: 10,
+            hp: 20,
+            maxHP: 20,
             maxMP: 10,
             mp: 10,
-            atk: 3,
-            def: 3,
+            atk: 8,
+            def: 8,
             spd: 3
         }
     },
@@ -51,13 +52,13 @@ export const enemies = [
         name: 'Orc',
         image: orc,
         stats: {
-            hp: 20,
-            maxHP: 20,
+            hp: 45,
+            maxHP: 45,
             mp: 10,
             maxMP: 10,
-            atk: 3,
+            atk: 30,
             def: 3,
-            spd: 3
+            spd: 2
         }
     },
     {
@@ -66,9 +67,24 @@ export const enemies = [
         name: 'Dragon',
         image: dragon,
         stats: {
-            hp: 30,
+            hp: 100,
+            mp: 30,
+            maxHP: 100,
+            maxMP: 30,
+            atk: 50,
+            def: 20,
+            spd: 10
+        }
+    },
+    {
+        type: 'com',
+        key: 'Slime',
+        name: 'Demon Slime',
+        image: Slime,
+        stats: {
+            hp: 10,
             mp: 10,
-            maxHP: 30,
+            maxHP: 10,
             maxMP: 10,
             atk: 5,
             def: 5,

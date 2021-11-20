@@ -154,6 +154,7 @@ body {
 
 .character-detail__sidebar .stats {
   display: flex;
+  margin-bottom: 15px;
 }
 
 .character-detail__sidebar .stats .player-avatar {
@@ -171,6 +172,43 @@ body {
   flex-basis: calc(50% - 15px);
   flex-grow: 1;
 }
+
+.character-detail__sidebar .player-inventory {
+  height: 85px;
+  width: 160px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.character-detail__sidebar .player-inventory .item {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border: 1.5px solid #fff;
+}
+
+.character-detail__sidebar .player-inventory .item .item-thumb{
+  width: 50px;
+  height: 50px;
+}
+
+.character-detail__sidebar .player-inventory .item .item-stats{
+  width: 150px;
+  height: 100px;
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  background-color: #fff;
+  padding: 5px;
+  opacity: 0;
+  color: #000;
+  transition: opacity .5s;
+}
+.character-detail__sidebar .player-inventory .item:hover .item-stats {
+  opacity: 1;
+}
+
 /* FIGHT SCREEN */
 .fight-screen {
   position: relative;

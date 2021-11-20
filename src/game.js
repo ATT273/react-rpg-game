@@ -57,7 +57,8 @@ class Game {
             atk: 0,
             def: 0,
             hp: 0,
-            spd: 0
+            spd: 0,
+            mp: 0
         }
         itemList.forEach(item => {
             bonusStats.atk += item.stats.atk !== undefined ? item.stats.atk : 0
@@ -71,6 +72,36 @@ class Game {
         return bonusStats
     }
 
+    static takeItem(item, itemList) {
+        let newInventory = [...itemList];
+        let message = '';
+        let checkDuplicate = false;
+        if (itemList.length < 6) {
+
+            itemList.forEach((pItem) => {
+                if (pItem.key === item.key) {
+                    checkDuplicate = true
+                    message = 'You \'ve already had this item';
+                }
+                if (pItem.type === item.type) {
+                    checkDuplicate = true
+                    message = `You can\'t have 2 items with the type of ${item.type}`;
+                }
+            })
+            if (!checkDuplicate) {
+                newInventory.push(item);
+                message = `${item.name} is added to your inventory`;
+                // const bonusStats = Game.getBonusStats(inventory);
+                // dispatch(updateInventory([...inventory]));
+                // dispatch(updateBonusStats(bonusStats));
+                // player.bonusStats = { ...Game.getBonusStats(itemList) }
+            }
+
+        } else if (itemList.length > 6) {
+            console.log('Please remove 1 of your items')
+        }
+        return { newInventory, message, duplicate: checkDuplicate }
+    }
 }
 
 export default Game
