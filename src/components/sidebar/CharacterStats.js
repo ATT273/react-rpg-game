@@ -31,8 +31,7 @@ const CharacterStats = () => {
                         <StatsBar stats={{ mp: player.stats.mp, maxMP: player.stats.maxMP }} name={'mp'} />
                     </div>
                     <div className="item">
-                        <p><b>MP: </b> {player.exp}/{player.levelExp} <i className='txt-green'>{player.bonusStats.mp > 0 ? `(+ ${player.bonusStats.mp})` : ''}</i></p>
-                        <StatsBar stats={{ mp: player.stats.mp, maxMP: player.stats.maxMP }} name={'mp'} />
+                        <p><b>Lvl {player.level}: </b> {player.exp}/{player.levelExp}</p>
                     </div>
                     <div className="item">
                         <p><b>ATK: </b> {player.stats.atk} <i className='txt-green'>{player.bonusStats.atk > 0 ? `(+ ${player.bonusStats.atk})` : ''}</i></p>

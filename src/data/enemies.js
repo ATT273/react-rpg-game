@@ -1,7 +1,9 @@
-import tiger from '../images/enemies/tiger.webp'
-import orc from '../images/enemies/orc.png'
-import dragon from '../images/enemies/dragon.jpg'
-import Slime from '../images/enemies/Slime_puddle.png'
+import tiger from '../images/enemies/tiger.webp';
+import orc from '../images/enemies/orc.png';
+import dragon from '../images/enemies/dragon.jpg';
+import Slime from '../images/enemies/Slime_puddle.png';
+import Cobra from '../images/enemies/cobra.jpg';
+
 
 const enemies = [
     {
@@ -70,6 +72,23 @@ const enemies = [
             atk: 5,
             def: 3,
             spd: 1
+        }
+    },
+    {
+        type: 'com',
+        key: 'cobra',
+        name: 'King Cobra',
+        image: Cobra,
+        matchLvl: [2, 3],
+        xp: 16,
+        stats: {
+            hp: 15,
+            mp: 10,
+            maxHP: 15,
+            maxMP: 10,
+            atk: 7,
+            def: 3,
+            spd: 3
         }
     }
 ];
