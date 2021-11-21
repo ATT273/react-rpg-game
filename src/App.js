@@ -33,6 +33,8 @@ const App = () => {
 	const playerData = useSelector(state => state.player.player);
 
 	useEffect(() => {
+		const nextLvl = Game.calculateLvlFromExp(51);
+		const xpp = Game.calculateCurrentLvlExp(Math.floor(2))
 		setPlayer(playerData)
 	}, [playerData])
 

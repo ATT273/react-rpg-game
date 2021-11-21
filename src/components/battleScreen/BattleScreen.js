@@ -6,7 +6,7 @@ import ReadyPopUp from './components/ReadyPopUp'
 import { motion, AnimatePresence } from 'framer-motion'
 import Game from '../../game'
 import { useSelector, useDispatch } from 'react-redux';
-import { updateStats } from '../../store/player/playerSlice';
+import { updateStats, updatePlayer } from '../../store/player/playerSlice';
 import * as _ from 'lodash';
 import { ReactComponent as Loading } from '../../images/svgs/loading.svg';
 
@@ -46,16 +46,17 @@ const BattleScreen = ({ getEvent, comData }) => {
     useEffect(() => {
         const _player = _.cloneDeep(playerData);
         const _com = _.cloneDeep(comData);
+        if (isPlayerTurn === undefined) {
+            const _isPlayerTurn = _player.stats.spd > _com.stats.spd ? true : false;
+            setisPlayerTurn(_isPlayerTurn);
+        }
         setPlayer(_player);
         setCom(_com);
     }, []);
 
     useEffect(() => {
         if (com.hasOwnProperty('type') && player.hasOwnProperty('type')) {
-            if (isPlayerTurn === undefined) {
-                const _isPlayerTurn = player.stats.spd > com.stats.spd ? true : false;
-                setisPlayerTurn(_isPlayerTurn);
-            }
+
             checkWinCondition(player, com, isPlayerTurn)
         }
 
@@ -166,21 +167,32 @@ const BattleScreen = ({ getEvent, comData }) => {
         if (!isPlayerTurn) {
             setTimeout(() => {
                 handleEndturn();
-            }, 1500)
+            }, 500)
         } else {
             handleEndturn();
         }
     }
 
     const handleNextBtnClick = () => {
-        dispatch(updateStats(player.stats));
+        // dispatch(updateStats(player.stats));
+        const _player = { ...player };
+        const playerExp = player.exp + com.xp;
+        _player.exp = playerExp;
+        if (playerExp >= player.levelExp) {
+            const nextLvl = Game.calculateLvlFromExp(playerExp);
+            const newLevelExp = Game.calculateCurrentLvlExp(Math.floor(nextLvl) + 1);
+            _player.level = Math.floor(nextLvl) + 1;
+            _player.exp = playerExp - player.levelExp;
+            _player.levelExp = newLevelExp;
+        }
+
+
+        dispatch(updatePlayer(_player));
         getEvent();
     }
 
     return (
         <div className='fight-screen'>
-
-
             <AnimatePresence>
                 {
                     state.showReadyPopup &&
@@ -217,10 +229,8 @@ const BattleScreen = ({ getEvent, comData }) => {
                             <button className="btn bg-green w-200" style={{ margin: 'auto' }} onClick={handleNextBtnClick}>Next</button>
                         }
                     </motion.div>
-
                 }
             </AnimatePresence>
-
         </div>
     )
 }

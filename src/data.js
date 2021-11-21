@@ -1,13 +1,15 @@
 import enemiesData from './data/enemies';
 
-import knight from './images/classes/knight.jpg'
-import warrior from './images/classes/warrior.jpg'
-import assassin from './images/classes/assassin.jpg'
+import knight from './images/classes/knight.jpg';
+import warrior from './images/classes/warrior.jpg';
+import assassin from './images/classes/assassin.jpg';
 
-import RustySword from './images/items/Rusty_sword.png'
-import WoodenShield from './images/items/wood_shield.png'
-import LeatherBoots from './images/items/Leather_boot.png'
-import IronShield from './images/items/Iron_Shield.png'
+import RustySword from './images/items/Rusty_sword.png';
+import WoodenShield from './images/items/wood_shield.png';
+import LeatherBoots from './images/items/Leather_boot.png';
+import IronShield from './images/items/Iron_Shield.png';
+import BroadSword from './images/items/broad_sword.jpg';
+import ChestPlate from './images/items/chest_plate.jpg';
 
 export const classes = {
     knight: {
@@ -65,12 +67,34 @@ export const items = [
     {
         id: 3,
         image: IronShield,
-        key: 'woo_shield',
+        key: 'iron_shield',
         name: 'Iron shield',
         type: 'shield',
         price: 300,
         stats: {
             def: 5,
+        }
+    },
+    {
+        id: 4,
+        image: BroadSword,
+        key: 'broad_sword',
+        name: 'Broadsword',
+        type: 'sword',
+        price: 300,
+        stats: {
+            atk: 5,
+        }
+    },
+    {
+        id: 5,
+        image: ChestPlate,
+        key: 'chest-plate',
+        name: 'Chest plate',
+        type: 'armor',
+        price: 500,
+        stats: {
+            def: 10,
         }
     }
 ]

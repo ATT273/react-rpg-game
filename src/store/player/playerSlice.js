@@ -48,10 +48,13 @@ export const playerSlice = createSlice({
 
             state.player = { ...state.player, items: [...newItems] };
         },
+        updatePlayer: (state, action) => {
+            state.player = { ...state.player, ...action.payload };
+        }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { updateStats, updateInventory, createCharacter, updateBonusStats } = playerSlice.actions
+export const { updateStats, updateInventory, createCharacter, updateBonusStats, updatePlayer } = playerSlice.actions
 
 export default playerSlice.reducer
