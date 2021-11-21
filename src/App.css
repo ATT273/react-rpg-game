@@ -204,6 +204,7 @@ body {
   opacity: 0;
   color: #000;
   transition: opacity .5s;
+  z-index: 99;
 }
 .character-detail__sidebar .player-inventory .item:hover .item-stats {
   opacity: 1;

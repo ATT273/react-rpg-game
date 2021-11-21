@@ -1,8 +1,8 @@
 import { enemies, events, items } from './data'
 
 class Game {
-    static getEnemy(key) {
-        const filterEnemies = enemies.filter(enemy => enemy.key !== key)
+    static getEnemy(key, level) {
+        const filterEnemies = enemies.filter(enemy => enemy.key !== key && enemy.matchLvl.includes(level));
         const randomIdx = Math.floor(Math.random() * (filterEnemies.length));
         return JSON.parse(JSON.stringify(filterEnemies[randomIdx]))
     }
@@ -91,16 +91,22 @@ class Game {
             if (!checkDuplicate) {
                 newInventory.push(item);
                 message = `${item.name} is added to your inventory`;
-                // const bonusStats = Game.getBonusStats(inventory);
-                // dispatch(updateInventory([...inventory]));
-                // dispatch(updateBonusStats(bonusStats));
-                // player.bonusStats = { ...Game.getBonusStats(itemList) }
             }
 
         } else if (itemList.length > 6) {
             console.log('Please remove 1 of your items')
         }
         return { newInventory, message, duplicate: checkDuplicate }
+    }
+
+    static calculateCurrentLvlExp(level) {
+        const exp = 50 * Math.pow(2, (level - 1));
+        return exp
+    }
+
+    static calculateLvlFromExp(exp) {
+        const lvl = Math.log(exp / 25) / Math.log(2);
+        return lvl.toFixed(2);
     }
 }
 

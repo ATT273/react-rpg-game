@@ -3,6 +3,7 @@ import ClassesSelection from './ClassesSelection'
 import { classes } from '../../data'
 import { useSelector, useDispatch } from 'react-redux';
 import { createCharacter } from '../../store/player/playerSlice';
+import Game from '../../game';
 
 const CreateCharacter = ({ startGame }) => {
     const dispatch = useDispatch();
@@ -12,7 +13,8 @@ const CreateCharacter = ({ startGame }) => {
 
     useEffect(() => {
         const initPlayer = Object.assign({}, player);
-        setCreatePlayer(prevState => ({ ...prevState, ...initPlayer }));
+        const levelExp = Game.calculateCurrentLvlExp(1);
+        setCreatePlayer(prevState => ({ ...prevState, ...initPlayer, levelExp }));
 
     }, [player])
 
@@ -38,14 +40,13 @@ const CreateCharacter = ({ startGame }) => {
         } else if (createPlayer.atk === 0 || createPlayer.def === 0 || createPlayer.spd === 0) {
             setErrors(prevState => ({ ...prevState, statsError: 'Please enter your stats' }));
             err = true
-        } else if (Number(createPlayer.atk) + Number(createPlayer.def) + Number(createPlayer.spd) > 12) {
+        } else if (Number(createPlayer.stats.atk) + Number(createPlayer.stats.def) + Number(createPlayer.stats.spd) > 12) {
             setErrors(prevState => ({ ...prevState, statsError: 'Can not assign more than 12 point to stats' }));
             err = true
         } else if (createPlayer.plClass === '') {
             setErrors(prevState => ({ ...prevState, classError: 'Please choose your class' }));
             err = true
         }
-
         if (!err) {
             dispatch(createCharacter(createPlayer));
             startGame();
