@@ -56,7 +56,7 @@ const App = () => {
 
 	// battle screen
 	const getBattleData = () => {
-		const getEnemy = Object.assign({}, Game.getEnemy(currentEnemy))
+		const getEnemy = Object.assign({}, Game.getEnemy(currentEnemy, player.level))
 
 		setCurrentEnemy(getEnemy.key);
 		setEnemy(prevState => ({ ...prevState, ...getEnemy }))
@@ -99,25 +99,7 @@ const App = () => {
 			const bonusStats = Game.getBonusStats(_takeItems.newInventory);
 			dispatch(updateInventory([..._takeItems.newInventory]));
 			dispatch(updateBonusStats(bonusStats));
-			console.log(_takeItems.message);
 		}
-		// if (player.items.length < 6) {
-		// 	let checkDuplicate = false
-		// 	player.items.forEach((pItem) => {
-		// 		if (pItem.key === item.key) {
-		// 			checkDuplicate = true
-		// 			console.log('You \'ve already had this item')
-		// 		}
-		// 	})
-		// 	if (!checkDuplicate) {
-		// 		const inventory = [...player.items, item];
-
-		// 		// player.bonusStats = { ...Game.getBonusStats(player.items) }
-		// 	}
-
-		// } else if (player.items.length > 6) {
-		// 	console.log('Please remove 1 of your items')
-		// }
 
 		getEvent()
 	}

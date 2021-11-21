@@ -8,10 +8,11 @@ function InventoryBlock({ item }) {
                     ? <div className='item'>
                         <img src={item.image} alt={item.key} className='item-thumb' />
                         <div className='item-stats'>
+                            <p><b>{item.name.toUpperCase()}</b></p>
                             <p>price: {item.price}</p>
                             {
                                 Object.keys(item.stats).map(key => {
-                                    return <p>{`${key}: ${item.stats[key]}`}</p>
+                                    return <p key={key}>{`${key}: ${item.stats[key]}`}</p>
                                 })
                             }
                         </div>

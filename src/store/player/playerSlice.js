@@ -9,6 +9,9 @@ export const playerSlice = createSlice({
             name: '',
             image: player_img,
             plClass: '',
+            level: 1,
+            exp: 0,
+            levelExp: 0,
             stats: {
                 hp: 100,
                 mp: 100,

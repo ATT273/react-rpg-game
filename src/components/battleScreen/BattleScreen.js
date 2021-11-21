@@ -8,10 +8,8 @@ import Game from '../../game'
 import { useSelector, useDispatch } from 'react-redux';
 import { updateStats } from '../../store/player/playerSlice';
 import * as _ from 'lodash';
+import { ReactComponent as Loading } from '../../images/svgs/loading.svg';
 
-// const intro = {
-//     transition: 'all 500ms ease-out'
-// }
 
 const BattleScreen = ({ getEvent, comData }) => {
 
@@ -19,7 +17,8 @@ const BattleScreen = ({ getEvent, comData }) => {
     const dispatch = useDispatch();
     const [player, setPlayer] = useState({});
     const [com, setCom] = useState({});
-    const [attacker, setAttacker] = useState('');
+    const [isPlayerTurn, setisPlayerTurn] = useState();
+    const [showPlayerActionBlock, setShowPlayerActionBlock] = useState(false);
     const [state, setState] = useState({
         display: 'block',
         intrOpacity: 1,
@@ -53,18 +52,32 @@ const BattleScreen = ({ getEvent, comData }) => {
 
     useEffect(() => {
         if (com.hasOwnProperty('type') && player.hasOwnProperty('type')) {
-            checkWinCondition(player, com, attacker)
+            if (isPlayerTurn === undefined) {
+                const _isPlayerTurn = player.stats.spd > com.stats.spd ? true : false;
+                setisPlayerTurn(_isPlayerTurn);
+            }
+            checkWinCondition(player, com, isPlayerTurn)
         }
+
     }, [com, player]);
 
     useEffect(() => {
-        if (attacker !== '') {
-            checkWinCondition(player, com, attacker)
+        if (isPlayerTurn !== undefined) {
+            checkWinCondition(player, com)
         }
-        if (attacker === 'player') {
+        if (isPlayerTurn !== undefined && !isPlayerTurn && com.stats.hp > 0) {
             handleAtkButtonClick('com', 'player')
         }
-    }, [attacker])
+    }, [isPlayerTurn])
+
+    useEffect(() => {
+        if (isPlayerTurn && player.name && player.stats.hp > 0) {
+            setShowPlayerActionBlock(true);
+        } else {
+            setShowPlayerActionBlock(false)
+        }
+    }, [isPlayerTurn, player]);
+
     const handleReady = () => {
 
         setState(prev => ({
@@ -75,6 +88,10 @@ const BattleScreen = ({ getEvent, comData }) => {
             showReadyPopup: false,
             showBattleScreen: true,
         }))
+    }
+
+    const handleEndturn = () => {
+        setisPlayerTurn(!isPlayerTurn);
     }
 
     const renderFighters = () => {
@@ -108,7 +125,7 @@ const BattleScreen = ({ getEvent, comData }) => {
         }))
     }
 
-    const checkWinCondition = (player, com, attackerName) => {
+    const checkWinCondition = (player, com) => {
         let winStatus = Game.winCondition(player, com)
 
         // if (winStatus.status === 1 && attacker === 'player') {
@@ -128,7 +145,6 @@ const BattleScreen = ({ getEvent, comData }) => {
     }
 
     const handleAtkButtonClick = async (attackerName, targetName) => {
-        setAttacker(attackerName)
         let attacker = attackerName === 'player' ? player : com
         let target = targetName === 'player' ? player : com
         // let winStatus = {}
@@ -146,6 +162,14 @@ const BattleScreen = ({ getEvent, comData }) => {
             ...prev,
             battleLogs: [...state.battleLogs, afterAtk.combatLog]
         }))
+
+        if (!isPlayerTurn) {
+            setTimeout(() => {
+                handleEndturn();
+            }, 1500)
+        } else {
+            handleEndturn();
+        }
     }
 
     const handleNextBtnClick = () => {
@@ -183,19 +207,10 @@ const BattleScreen = ({ getEvent, comData }) => {
                     <motion.div className="main-content"
                         initial={{ opacity: 1 }}
                         exit={{ opacity: 0 }}>
-                        {/* {
-                                showComTurn &&
-                                <div className={'com-turn-popup-bg'} >
-                                    <div className={'com-turn-popup'} style={{ ...displayCombatLog }}>Enemy turn ... </div>
-                                </div>
-                            } */}
-
-                        {/* <div className='test-msg'>absadad</div> */}
-                        {
-                            player !== null &&
-                            renderFighters()
-                        }
-                        <PlayerActionsBlock handleAtkButtonClick={handleAtkButtonClick} showComTurn={state.showComTurn} />
+                        {player !== null && renderFighters()}
+                        {showPlayerActionBlock
+                            ? <PlayerActionsBlock handleAtkButtonClick={handleAtkButtonClick} showComTurn={state.showComTurn} />
+                            : <Loading />}
                         <BattleLog battleLogs={state.battleLogs} />
                         {
                             state.showNextBtn &&
