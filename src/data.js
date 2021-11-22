@@ -36,6 +36,7 @@ export const items = [
         key: 'rusty_sword',
         name: 'Rusty Sword',
         type: 'sword',
+        isConsumable: false,
         price: 100,
         stats: {
             atk: 1,
@@ -47,6 +48,7 @@ export const items = [
         key: 'wooden_shield',
         name: 'Wooden shield',
         type: 'shield',
+        isConsumable: false,
         price: 200,
         stats: {
             def: 3,
@@ -58,6 +60,7 @@ export const items = [
         key: 'leather_boots',
         name: 'Leather boots',
         type: 'boots',
+        isConsumable: false,
         price: 200,
         stats: {
             def: 2,
@@ -70,6 +73,7 @@ export const items = [
         key: 'iron_shield',
         name: 'Iron shield',
         type: 'shield',
+        isConsumable: false,
         price: 300,
         stats: {
             def: 5,
@@ -81,6 +85,7 @@ export const items = [
         key: 'broad_sword',
         name: 'Broadsword',
         type: 'sword',
+        isConsumable: false,
         price: 300,
         stats: {
             atk: 5,
@@ -92,9 +97,22 @@ export const items = [
         key: 'chest-plate',
         name: 'Chest plate',
         type: 'armor',
+        isConsumable: false,
         price: 500,
         stats: {
             def: 10,
+        }
+    },
+    {
+        id: 6,
+        image: ChestPlate,
+        key: 'health-potion',
+        name: 'HP potion',
+        type: 'potion',
+        isConsumable: true,
+        price: 50,
+        stats: {
+            hp: 10,
         }
     }
 ]

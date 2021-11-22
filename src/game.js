@@ -99,6 +99,18 @@ class Game {
         return { newInventory, message, duplicate: checkDuplicate }
     }
 
+    static consumeItem(player, key) {
+        const stats = { ...player.stats };
+        const selectedItem = items.find(item => item.key === key);
+        if (selectedItem) {
+            Object.keys(selectedItem.stats).forEach(key => {
+                stats[key] += selectedItem.stats[key];
+            })
+        }
+
+        return stats
+    }
+
     static calculateCurrentLvlExp(level) {
         const exp = 50 * Math.pow(2, (level - 1));
         return exp
