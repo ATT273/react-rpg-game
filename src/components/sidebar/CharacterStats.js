@@ -13,11 +13,13 @@ const CharacterStats = () => {
     const dispatch = useDispatch();
     const handleUseItem = (key, itemIndex) => {
         const _player = _.cloneDeep(player);
-        // _player.items.splice(itemIndex, 1);
+        if (_player.stats[key] === _player.stats[`max${key.toUpperCase()}`]) return alert(`${key.toUpperCase()} is full`);
+        _player.items.splice(itemIndex, 1);
         _player.bonusStats = Game.getBonusStats(_player.items);
         const newStats = Game.consumeItem(_player, key);
+        _player.stats = { ..._player.stats, ...newStats };
         console.log(`newStats`, newStats);
-        // dispatch(updatePlayer(_player));
+        dispatch(updatePlayer(_player));
     }
 
     const handleDropItem = (key, itemIndex) => {

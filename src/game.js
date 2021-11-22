@@ -104,7 +104,9 @@ class Game {
         const selectedItem = items.find(item => item.key === key);
         if (selectedItem) {
             Object.keys(selectedItem.stats).forEach(key => {
-                stats[key] += selectedItem.stats[key];
+                if (stats[key] + selectedItem.stats[key] > stats.maxHP) {
+                    stats[key] = stats.maxHP;
+                } else stats[key] += selectedItem.stats[key];
             })
         }
 
