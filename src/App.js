@@ -43,7 +43,7 @@ const App = () => {
 	}
 
 	const getEvent = () => {
-		let id = Game.getEvent(currentEvent)
+		let id = Game.getEvent(currentEvent);
 		setCurrentEvent(id);
 
 		// let id  = 1
@@ -86,24 +86,20 @@ const App = () => {
 	const getLootData = () => {
 		const lootItem = Game.getLootItem()
 		setLoot(lootItem);
-		// setState({
-		// 	loot: lootItem
-		// })
 		onShowLootScreen()
 	}
 
 	const takeItem = (item) => {
 		const _takeItems = Game.takeItem(item, player.items);
 
-		if (_takeItems.duplicate) {
+		if (_takeItems.isMaxQty) {
 			alert(_takeItems.message)
 		} else {
 			const bonusStats = Game.getBonusStats(_takeItems.newInventory);
 			dispatch(updateInventory([..._takeItems.newInventory]));
 			dispatch(updateBonusStats(bonusStats));
+			getEvent();
 		}
-
-		getEvent()
 	}
 
 	const leaveItem = () => {
@@ -131,8 +127,6 @@ const App = () => {
 				break;
 		}
 	}
-
-
 
 	return (
 		<div className="App" onKeyDown={handleKeypress} tabIndex="0" >

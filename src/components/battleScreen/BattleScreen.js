@@ -40,7 +40,8 @@ const BattleScreen = ({ getEvent, comData }) => {
     }, [comData])
 
     useEffect(() => {
-        setPlayer(playerData)
+        const _player = _.cloneDeep(playerData);
+        setPlayer(_player)
     }, [playerData])
 
     useEffect(() => {
@@ -59,7 +60,6 @@ const BattleScreen = ({ getEvent, comData }) => {
 
             checkWinCondition(player, com, isPlayerTurn)
         }
-
     }, [com, player]);
 
     useEffect(() => {

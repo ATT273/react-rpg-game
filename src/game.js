@@ -1,5 +1,5 @@
 import { enemies, events, items } from './data'
-
+import * as _ from 'lodash';
 class Game {
     static getEnemy(key, level) {
         const filterEnemies = enemies.filter(enemy => enemy.key !== key && enemy.matchLvl.includes(level));
@@ -44,7 +44,7 @@ class Game {
     static getLootItem() {
         // const filterEvents = events.filter(event => event.id !== id)
         const randomIdx = Math.floor(Math.random() * (items.length));
-        return items[randomIdx]
+        return _.cloneDeep(items[randomIdx]);
     }
     static getEvent(id) {
         const filterEvents = events.filter(event => event.id !== id)
@@ -53,19 +53,22 @@ class Game {
     }
 
     static getBonusStats(itemList) {
+        console.log(`itemList`, itemList)
         const bonusStats = {
             atk: 0,
             def: 0,
-            hp: 0,
             spd: 0,
-            mp: 0
+            maxHP: 0,
+            maxMP: 0
         }
         itemList.forEach(item => {
             bonusStats.atk += item.stats.atk !== undefined ? item.stats.atk : 0
             bonusStats.def += item.stats.def !== undefined ? item.stats.def : 0
-            bonusStats.hp += item.stats.hp !== undefined ? item.stats.hp : 0
-            bonusStats.mp += item.stats.mp !== undefined ? item.stats.mp : 0
+            // bonusStats.hp += item.stats.hp !== undefined ? item.stats.hp : 0
+            // bonusStats.mp += item.stats.mp !== undefined ? item.stats.mp : 0
             bonusStats.spd += item.stats.spd !== undefined ? item.stats.spd : 0
+            bonusStats.maxHP += item.stats.maxHP !== undefined ? item.stats.maxHP : 0
+            bonusStats.maxMP += item.stats.maxMP !== undefined ? item.stats.maxMP : 0
 
         })
 
@@ -73,30 +76,34 @@ class Game {
     }
 
     static takeItem(item, itemList) {
-        let newInventory = [...itemList];
+        let newInventory = _.cloneDeep(itemList);
         let message = '';
-        let checkDuplicate = false;
-        if (itemList.length < 6) {
-
-            itemList.forEach((pItem) => {
-                if (pItem.key === item.key) {
-                    checkDuplicate = true
-                    message = 'You \'ve already had this item';
+        let isMaxQty = false;
+        if (newInventory.length < 6) {
+            const itemIndex = _.findIndex(newInventory, pItem => pItem.key === item.key);
+            if (itemIndex > -1) {
+                if (newInventory[itemIndex].qty === newInventory[itemIndex].maxQty) {
+                    isMaxQty = true;
+                    message = `You can only have ${newInventory[itemIndex].maxQty} of this item`;
+                } else {
+                    newInventory[itemIndex].qty += 1;
+                    message = `${item.name} is added to your inventory`;
+                    return { newInventory, message, isMaxQty }
                 }
-                if (pItem.type === item.type) {
-                    checkDuplicate = true
-                    message = `You can\'t have 2 items with the type of ${item.type}`;
+            } else {
+                if (!isMaxQty) {
+                    item.qty += 1;
+                    newInventory.push(item);
+                    message = `${item.name} is added to your inventory`;
                 }
-            })
-            if (!checkDuplicate) {
-                newInventory.push(item);
-                message = `${item.name} is added to your inventory`;
             }
 
+
         } else if (itemList.length > 6) {
-            console.log('Please remove 1 of your items')
+            message = 'Please remove 1 of your items';
+            isMaxQty = true;
         }
-        return { newInventory, message, duplicate: checkDuplicate }
+        return { newInventory, message, isMaxQty }
     }
 
     static consumeItem(player, key) {
@@ -104,8 +111,8 @@ class Game {
         const selectedItem = items.find(item => item.key === key);
         if (selectedItem) {
             Object.keys(selectedItem.stats).forEach(key => {
-                if (stats[key] + selectedItem.stats[key] > stats.maxHP) {
-                    stats[key] = stats.maxHP;
+                if (stats[key] + selectedItem.stats[key] > stats[`max${key.toUpperCase()}`]) {
+                    stats[key] = stats[`max${key.toUpperCase()}`];
                 } else stats[key] += selectedItem.stats[key];
             })
         }

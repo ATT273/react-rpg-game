@@ -188,6 +188,19 @@ body {
   border: 1.5px solid #fff;
 }
 
+.character-detail__sidebar .player-inventory .item .item-qty {
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+  color: #2a2a2a;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 12px;
+  text-align: center;
+  line-height: 12px;
+}
+
 .character-detail__sidebar .player-inventory .item .three-dot-menu {
   position: absolute;
   width: 15px;
@@ -347,7 +360,7 @@ ul.item-menu li:hover {
 .main-screen {
   /* margin: auto; */
   width: 60%;
-  height: 800px;
+  height: 100%;
   max-width: 1000px;
   /* border-radius: 25px; */
   overflow: hidden;
@@ -356,7 +369,7 @@ ul.item-menu li:hover {
 
 .side-bar {
   width: calc((40% - 30px)/2);
-  height: 800px;
+  height: 100%;
   border-radius: 6px;
   /* background-color: var(--side-bar-bg); */
   background-color: var(--side-bar-bg);

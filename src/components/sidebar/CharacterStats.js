@@ -11,14 +11,24 @@ import * as _ from 'lodash';
 const CharacterStats = () => {
     const player = useSelector(state => state.player.player);
     const dispatch = useDispatch();
-    const handleUseItem = (key, itemIndex) => {
+
+    const handleUseItem = (itemKey, itemIndex) => {
         const _player = _.cloneDeep(player);
-        if (_player.stats[key] === _player.stats[`max${key.toUpperCase()}`]) return alert(`${key.toUpperCase()} is full`);
-        _player.items.splice(itemIndex, 1);
+        const selectedItem = _player.items[itemIndex];
+        let message = '';
+        Object.keys(selectedItem.stats).forEach(key => {
+            if (_player.stats[key] === _player.stats[`max${key.toUpperCase()}`]) message += `Your ${key} is full. You don't need to use this \n`;
+        })
+        if (message !== '') return alert(message);
+
+        if (selectedItem.qty === 1) {
+            _player.items.splice(itemIndex, 1);
+        } else if (selectedItem.qty > 1) {
+            _player.items[itemIndex].qty -= 1;
+        }
         _player.bonusStats = Game.getBonusStats(_player.items);
-        const newStats = Game.consumeItem(_player, key);
+        const newStats = Game.consumeItem(_player, itemKey);
         _player.stats = { ..._player.stats, ...newStats };
-        console.log(`newStats`, newStats);
         dispatch(updatePlayer(_player));
     }
 

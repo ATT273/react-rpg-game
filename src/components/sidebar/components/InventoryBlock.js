@@ -15,6 +15,7 @@ function InventoryBlock({ itemIndex, item, onItemUsed, onItemDropped }) {
                 item
                     ? <div className='item'>
                         <img src={item.image} alt={item.key} className='item-thumb' />
+                        {item.qty > 1 && <div className='item-qty'>{item.qty}</div>}
                         <div className='three-dot-menu' onClick={handleMenuBtnClick}></div>
                         {
                             isShowItemMenu &&
