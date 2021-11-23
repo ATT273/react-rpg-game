@@ -3,7 +3,7 @@ import orc from '../images/enemies/orc.png';
 import dragon from '../images/enemies/dragon.jpg';
 import Slime from '../images/enemies/Slime_puddle.png';
 import Cobra from '../images/enemies/cobra.jpg';
-
+import Rat from '../images/enemies/zombie_rat.jpg';
 
 const enemies = [
     {
@@ -90,7 +90,24 @@ const enemies = [
             def: 3,
             spd: 3
         }
-    }
+    },
+    {
+        type: 'com',
+        key: 'rat',
+        name: 'Zombie rat',
+        image: Rat,
+        matchLvl: [1, 2],
+        xp: 7,
+        stats: {
+            hp: 10,
+            mp: 10,
+            maxHP: 10,
+            maxMP: 10,
+            atk: 7,
+            def: 3,
+            spd: 2
+        }
+    },
 ];
 
 export default enemies;

@@ -3,10 +3,41 @@ import player_img from '../../images/player/player.png'
 import StatsBar from '../UIComponents/StatsBar'
 import { useSelector, useDispatch } from 'react-redux';
 import InventoryBlock from './components/InventoryBlock';
+import { updatePlayer } from '../../store/player/playerSlice';
+import Game from '../../game';
+import * as _ from 'lodash';
+
 
 const CharacterStats = () => {
     const player = useSelector(state => state.player.player);
+    const dispatch = useDispatch();
 
+    const handleUseItem = (itemKey, itemIndex) => {
+        const _player = _.cloneDeep(player);
+        const selectedItem = _player.items[itemIndex];
+        let message = '';
+        Object.keys(selectedItem.stats).forEach(key => {
+            if (_player.stats[key] === _player.stats[`max${key.toUpperCase()}`]) message += `Your ${key} is full. You don't need to use this \n`;
+        })
+        if (message !== '') return alert(message);
+
+        if (selectedItem.qty === 1) {
+            _player.items.splice(itemIndex, 1);
+        } else if (selectedItem.qty > 1) {
+            _player.items[itemIndex].qty -= 1;
+        }
+        _player.bonusStats = Game.getBonusStats(_player.items);
+        const newStats = Game.consumeItem(_player, itemKey);
+        _player.stats = { ..._player.stats, ...newStats };
+        dispatch(updatePlayer(_player));
+    }
+
+    const handleDropItem = (key, itemIndex) => {
+        const _player = _.cloneDeep(player);
+        _player.items.splice(itemIndex, 1);
+        _player.bonusStats = Game.getBonusStats(_player.items);
+        dispatch(updatePlayer(_player));
+    }
     const renderInventory = () => {
         [0, 1, 2, 3, 4, 5].map(x => {
             return <InventoryBlock item={player.items[x]} />
@@ -46,7 +77,7 @@ const CharacterStats = () => {
             </div>
             <div className='player-inventory'>
                 {[0, 1, 2, 3, 4, 5].map(x => {
-                    return <InventoryBlock key={x} item={player.items[x]} />
+                    return <InventoryBlock key={x} itemIndex={x} item={player.items[x]} onItemUsed={handleUseItem} onItemDropped={handleDropItem} />
                 })}
             </div>
         </React.Fragment>

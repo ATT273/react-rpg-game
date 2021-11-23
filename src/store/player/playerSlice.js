@@ -22,8 +22,8 @@ export const playerSlice = createSlice({
                 spd: 0
             },
             bonusStats: {
-                hp: 0,
-                mp: 0,
+                maxHP: 0,
+                maxMP: 0,
                 atk: 0,
                 def: 0,
                 spd: 0
