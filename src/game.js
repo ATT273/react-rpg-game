@@ -69,7 +69,6 @@ class Game {
             bonusStats.spd += item.stats.spd !== undefined ? item.stats.spd : 0
             bonusStats.maxHP += item.stats.maxHP !== undefined ? item.stats.maxHP : 0
             bonusStats.maxMP += item.stats.maxMP !== undefined ? item.stats.maxMP : 0
-
         })
 
         return bonusStats

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import './App.css';
 import BattleScreen from './components/battleScreen/BattleScreen';
 import CreateCharacter from './components/createCharacter/CreateCharacter';
@@ -13,8 +13,14 @@ import DarkBG from './images/background/dark_bg.jpg';
 import { enemies, items } from './data'
 import { useSelector, useDispatch } from 'react-redux';
 import { updateStats, updateInventory, updateBonusStats } from './store/player/playerSlice';
+import Song from './audio/epic_song.mp3';
 
 const App = () => {
+	// const audio = useMemo(() => new Audio('./audio/epic_song.mp3'), []);
+	const [audio, setAudio] = useState('/public/audio/epic_song.mp3')
+	const audioRef = useRef();
+	const [isPlaying, setIsPlaying] = useState(false);
+
 	const [currentEvent, setCurrentEvent] = useState(null);
 	const [currentEnemy, setCurrentEnemy] = useState('');
 	const [enemy, setEnemy] = useState({ type: 'com' });
@@ -32,9 +38,19 @@ const App = () => {
 	const dispatch = useDispatch();
 	const playerData = useSelector(state => state.player.player);
 
+
+	useEffect(() => {
+		// if (audioRef.current) {
+		// 	audioRef.current.volume = 0.2;
+		// 	audioRef.current.play();
+		// }
+		audioRef.current.volume = 0.2;
+		audioRef.current.play();
+	}, []);
 	useEffect(() => {
 		const nextLvl = Game.calculateLvlFromExp(51);
 		const xpp = Game.calculateCurrentLvlExp(Math.floor(2))
+
 		setPlayer(playerData)
 	}, [playerData])
 
@@ -42,6 +58,12 @@ const App = () => {
 		setIsStartGame(true)
 	}
 
+	const playAudio = () => {
+		console.log(`audio`, audioRef);
+		audioRef.current.play()
+		// setIsPlaying(true);
+		// audioRef.current.play();
+	}
 	const getEvent = () => {
 		let id = Game.getEvent(currentEvent);
 		setCurrentEvent(id);
@@ -130,6 +152,13 @@ const App = () => {
 
 	return (
 		<div className="App" onKeyDown={handleKeypress} tabIndex="0" >
+			{/* <button onClick={playAudio}>Play!!</button> */}
+			<audio preload='metadata'
+				data-index="0" loop=""
+				autoPlay
+				controls ref={audioRef}>
+				<source src={Song} type='audio/mp3' ></source>
+			</audio>
 			{
 				showIngameMenu &&
 				<IngameMenu closeMenu={handleKeypress} />
@@ -141,11 +170,11 @@ const App = () => {
 						initial={{ opacity: 1 }}
 						transition={{ duration: 1 }}
 						exit={{ opacity: 0 }}>
+
 						<img className="bg_image" src={openningBackGround} alt="" />
 						<button className="btn_start btn" onClick={startGame}>Start!</button>
 					</motion.div>
 				}
-
 			</AnimatePresence>
 			{
 				isStartGame &&
