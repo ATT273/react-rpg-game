@@ -53,7 +53,6 @@ class Game {
     }
 
     static getBonusStats(itemList) {
-        console.log(`itemList`, itemList)
         const bonusStats = {
             atk: 0,
             def: 0,
