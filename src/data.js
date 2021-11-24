@@ -11,16 +11,25 @@ export const classes = {
         key: 'knight',
         name: 'Knight',
         image: knight,
+        bonuses: {
+            def: 1,
+        }
     },
     warrior: {
         key: 'warrior',
         name: 'Warrior',
-        image: warrior
+        image: warrior,
+        bonuses: {
+            atk: 1,
+        }
     },
     assassin: {
         key: 'assassin',
         name: 'Assassin',
-        image: assassin
+        image: assassin,
+        bonuses: {
+            spd: 1,
+        }
     }
 }
 export const enemies = [...enemiesData];

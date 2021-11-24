@@ -43,11 +43,9 @@ const App = () => {
 	}, []);
 
 	useEffect(() => {
-		// const nextLvl = Game.calculateLvlFromExp(51);
-		// const xpp = Game.calculateCurrentLvlExp(Math.floor(2));
 		setPlayer(playerData);
 	}, [playerData])
-
+	console.log(`player`, player)
 	useEffect(() => {
 		if (isContinueGame) {
 			dispatch(updatePlayer(saveGame.player))
@@ -205,14 +203,16 @@ const App = () => {
 						</div>
 					</motion.div>
 				}
-
 			</AnimatePresence>
 			{
 				isStartGame &&
 				<div className="game_screen" style={{ backgroundImage: `url(${DarkBG})` }} tabIndex="0" onKeyDown={handleKeypress} >
-					<header className='game-header'>
-						<img src={`${PUBLIC_URL}/hamburger_menu.png`} alt='menu' width={30} height={30} onClick={() => setShowIngameMenu(!showIngameMenu)} />
-					</header>
+					{
+						currentEvent !== null &&
+						<header className='game-header'>
+							<img src={`${PUBLIC_URL}/hamburger_menu.png`} alt='menu' width={30} height={30} onClick={() => setShowIngameMenu(!showIngameMenu)} />
+						</header>
+					}
 					<aside className="side-bar character-detail__sidebar">
 						{
 							player.name !== '' &&

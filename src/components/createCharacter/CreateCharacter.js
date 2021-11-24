@@ -23,10 +23,11 @@ const CreateCharacter = ({ startGame }) => {
         for (let item in classes) {
             classSelection.push(
                 <ClassesSelection
+                    selectedClass={createPlayer.plClass}
                     key={classes[item].key}
                     classInfo={classes[item]}
                     image={classes[item].image}
-                    handleChange={handleUserInput} />
+                    handleChange={handleSelectClass} />
             )
         }
         return classSelection
@@ -55,6 +56,19 @@ const CreateCharacter = ({ startGame }) => {
         }
     }
 
+    const handleSelectClass = (data) => {
+        const bonusStats = {
+            atk: 0,
+            def: 0,
+            hp: 0,
+            maxHP: 0,
+            maxMP: 0,
+            ...data.bonuses
+        };
+
+        setCreatePlayer(prevState => ({ ...prevState, plClass: data.value, bonusStats }));
+    }
+    console.log(`createPlayer`, createPlayer)
     const handleUserInput = (e) => {
         let statsError;
         const name = e.target.name;
