@@ -1,7 +1,6 @@
 import React from 'react'
 
 const ClassesSelection = ({ classInfo, image, handleChange, selectedClass }) => {
-    console.log(`selectedClass`, selectedClass, classInfo.key)
     return (
         <div className={`item ${selectedClass === classInfo.key ? 'active' : ''}`}>
             {/* <h3 style={{ textAlign: 'center', marginBottom: '10px', color: '#fff' }}>
