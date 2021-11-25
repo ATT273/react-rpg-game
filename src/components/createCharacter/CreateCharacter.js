@@ -9,6 +9,7 @@ const CreateCharacter = ({ startGame }) => {
     const dispatch = useDispatch();
     const player = useSelector(state => state.player.player);
     const [createPlayer, setCreatePlayer] = useState({});
+    const [selectedClass, setSelectedClass] = useState({});
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
@@ -23,10 +24,11 @@ const CreateCharacter = ({ startGame }) => {
         for (let item in classes) {
             classSelection.push(
                 <ClassesSelection
+                    selectedClass={selectedClass.value}
                     key={classes[item].key}
                     classInfo={classes[item]}
                     image={classes[item].image}
-                    handleChange={handleUserInput} />
+                    handleChange={handleSelectClass} />
             )
         }
         return classSelection
@@ -48,13 +50,24 @@ const CreateCharacter = ({ startGame }) => {
             err = true
         }
         if (!err) {
-            dispatch(createCharacter(createPlayer));
+            Object.keys(selectedClass.bonuses).map(key => {
+                createPlayer.stats[key] += selectedClass.bonuses[key]
+            })
+
+            dispatch(createCharacter({ ...createPlayer, plClass: selectedClass.plClass }));
             startGame();
         } else {
             console.log('errrr')
         }
     }
 
+    const handleSelectClass = (data) => {
+        setSelectedClass(data);
+        setCreatePlayer(prevState => ({ ...prevState, plClass: data.value }))
+        // setCreatePlayer(prevState => ({ ...prevState, plClass: data.value, bonusStats }));
+    }
+    console.log(`createPlayer`, createPlayer)
+    console.log(`selectedClass`, selectedClass)
     const handleUserInput = (e) => {
         let statsError;
         const name = e.target.name;

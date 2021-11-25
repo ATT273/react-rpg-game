@@ -1,18 +1,23 @@
-import React, { Component } from 'react'
+import React, { useRef, useEffect } from 'react'
 
-export class BattleLog extends Component {
+const BattleLog = ({ battleLogs }) => {
+    const battleLogRef = useRef();
+    const printBattleLog = battleLogs.map((log, index) => (<p key={index}>{log}</p>))
+    useEffect(() => {
+        const scroll = battleLogRef.current.scrollHeight - battleLogRef.current.clientHeight;
+        battleLogRef.current.scrollTo({
+            top: scroll,
+            left: 0,
+            behavior: 'smooth'
+        })
+    }, [battleLogs]);
 
-    render() {
-        const { battleLogs } = this.props
-        const printBattleLog = battleLogs.map((log, index) => (<p key={index}>{log}</p>))
-
-        return (
-            <div className={'battle-log'}>
-                <p><b>{'Battle logs'}</b></p>
-                {printBattleLog}
-            </div>
-        )
-    }
+    return (
+        <div ref={battleLogRef} className={'battle-log'}>
+            <p><b>{'Battle logs'}</b></p>
+            {printBattleLog}
+        </div>
+    )
 }
 
 export default BattleLog

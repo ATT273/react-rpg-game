@@ -24,7 +24,7 @@ const BattleScreen = ({ getEvent, comData }) => {
         intrOpacity: 1,
         mainOpacity: 0,
         comKey: '',
-        battleLogs: ['start'],
+        battleLogs: ['Start!!!'],
         displayCombatLog: {
             display: 'none'
         },
@@ -91,9 +91,7 @@ const BattleScreen = ({ getEvent, comData }) => {
         }))
     }
 
-    const handleEndturn = () => {
-        setisPlayerTurn(!isPlayerTurn);
-    }
+    const handleEndturn = () => { setisPlayerTurn(!isPlayerTurn); }
 
     const renderFighters = () => {
         return (
@@ -174,7 +172,6 @@ const BattleScreen = ({ getEvent, comData }) => {
     }
 
     const handleNextBtnClick = () => {
-        // dispatch(updateStats(player.stats));
         const _player = { ...player };
         const playerExp = player.exp + com.xp;
         _player.exp = playerExp;
@@ -185,7 +182,6 @@ const BattleScreen = ({ getEvent, comData }) => {
             _player.exp = playerExp - player.levelExp;
             _player.levelExp = newLevelExp;
         }
-
 
         dispatch(updatePlayer(_player));
         getEvent();
@@ -198,6 +194,7 @@ const BattleScreen = ({ getEvent, comData }) => {
                     state.showReadyPopup &&
                     <motion.div
                         className="container"
+                        key={'container'}
                         initial={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 1 }}>
@@ -217,6 +214,7 @@ const BattleScreen = ({ getEvent, comData }) => {
                     state.showBattleScreen &&
 
                     <motion.div className="main-content"
+                        key={'main-content'}
                         initial={{ opacity: 1 }}
                         exit={{ opacity: 0 }}>
                         {player !== null && renderFighters()}

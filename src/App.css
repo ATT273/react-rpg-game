@@ -5,6 +5,7 @@
   --default-bg: rgba(0,0, 25, 0.35);
   --welcome-screen-bg: #2e027d;
   --title-btm-border: #aeaeae;
+  --gray-text: #ababab
 }
 
 * {
@@ -16,6 +17,18 @@ body {
   width: 100vw;
   height: 100vh;
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .App {
   /* width: 1800px;
   height: 900px; */
@@ -116,6 +129,9 @@ body {
 }
 
 .character-classes__container .item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 250px;
   margin-right: 25px;
   overflow: hidden;
@@ -126,13 +142,35 @@ body {
 }
 
 .character-classes__container .item .image-container {
-  width: 100%;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   overflow: hidden;
+  cursor: pointer;
+  border: 3.5px solid goldenrod;
+  filter: grayscale(100%);
+  transition: filter 1s;
+}
+
+.character-classes__container .item .image-container:hover,
+.character-classes__container .item.active .image-container  {
+  filter: grayscale(0%);
+}
+
+.character-classes__container .item .image-container:hover img {
+  transform: scale(1.2, 1.2);
 }
 
 .character-classes__container .item .image-container img {
   width: 100%;
+  transition: transform 1s;
+}
+
+.character-classes__container .item .image-container + .class-title {
+  color: var(--gray-text);
+}
+.character-classes__container .item .image-container:hover + .class-title,
+.character-classes__container .item.active .image-container + .class-title {
+  color: goldenrod;
 }
 
 /* WELCOME SCREEN */
@@ -316,12 +354,19 @@ ul.item-menu li:hover {
 .fighters-stats {
   display: flex;
   color: #fff;
+  justify-content: center;
 }
 
 .fighters-stats .player,
 .fighters-stats .com {
   width: calc(50% - 20px);
   margin: 10px;
+}
+
+.fighters-stats .player .image-container,
+.fighters-stats .com .image-container {
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .fighters-stats .player img,
@@ -335,7 +380,7 @@ ul.item-menu li:hover {
   margin: 0 auto;
   padding: 10px;
   width: 90%;
-  height: 200px;
+  height: 150px;
   background-color: white;
   border: 2px solid black;
   /* border-radius: 10px; */

@@ -10,7 +10,9 @@ function FighterStatsBlock(props) {
 
                 <div className="fighters-stats">
                     <div className="player">
-                        <img src={player.image} alt="player_avatar" />
+                        <div className='image-container'>
+                            <img src={player.image} alt="player_avatar" />
+                        </div>
                         <div className="hp-mp">
                             <p><b>HP: </b> {player.stats.hp}/{player.stats.maxHP}</p>
                             <StatsBar stats={{ hp: player.stats.hp, maxHP: player.stats.maxHP }} name={'hp'} />
@@ -24,7 +26,9 @@ function FighterStatsBlock(props) {
                         </div>
                     </div>
                     <div className="com">
-                        <img src={com.image} alt="com_avatar" />
+                        <div className='image-container'>
+                            <img src={com.image} alt="com_avatar" />
+                        </div>
                         <div className="hp-mp">
                             <p><b>HP: </b> {com.stats.hp}/{com.stats.maxHP}</p>
                             <StatsBar stats={{ hp: com.stats.hp, maxHP: com.stats.maxHP }} name={'hp'} />
