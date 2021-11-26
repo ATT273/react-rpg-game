@@ -102,6 +102,7 @@ class Game {
             message = 'Please remove 1 of your items';
             isMaxQty = true;
         }
+
         return { newInventory, message, isMaxQty }
     }
 

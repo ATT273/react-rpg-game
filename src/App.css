@@ -36,7 +36,7 @@ input[type=number] {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: coral;
+  background-color: #0e0e0e;
 }
 
 .first_screen {
@@ -45,7 +45,8 @@ input[type=number] {
   z-index: 99;
 }
 
-.first_screen .bg_image {
+.first_screen .bg_image, 
+.endgame-screen .bg_image {
   width: 100vw;
   height: 100vh;
   object-fit: cover;
@@ -424,6 +425,45 @@ ul.item-menu li:hover {
 .loot-screen .button-group {
   width: 500px;
 }
+
+
+/* ENDGAME SCREEN */
+.endgame-screen {
+  position: relative;
+  display: block;
+  height: 100vh;
+  width: 100vw;
+}
+
+.endgame-screen .container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #d43445; 
+  height: 300px;
+  text-align: center;
+  width: 700px;
+}
+
+.endgame-screen .container button {
+  height: 50px;
+  width: 200px;
+  background-color: transparent;
+  border: none;
+  color: #aeaeae;
+  font-size: 18px;
+  font-weight: bolder;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: background-color 1s, color 1s;
+}
+
+.endgame-screen .container button:hover {
+  background-color: #aeaeae;
+  color: #000000;
+}
+
 /* COMMON CLASSES */
 .main-screen {
   /* margin: auto; */

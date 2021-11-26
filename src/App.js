@@ -6,6 +6,7 @@ import CreateCharacter from './components/createCharacter/CreateCharacter';
 import LootScreen from './components/lootItemScreen/LootScreen';
 import CharacterStats from './components/sidebar/CharacterStats';
 import WelcomeScreen from './components/welcomeScreen/WelcomeScreen';
+import EndGameScreen from './components/endGameScreen/EndGameScreen';
 import IngameMenu from './components/UIComponents/IngameMenu';
 import Game from './game';
 import openningBackGround from './images/background/back_ground.jpg';
@@ -28,6 +29,7 @@ const App = () => {
 	const [showFightScreen, setShowFightScreen] = useState(false);
 	const [showLootScreen, setShowLootScreen] = useState(false);
 	const [showIngameMenu, setShowIngameMenu] = useState(false);
+	const [showEndGameScreen, setShowEndGameScreen] = useState(false)
 	const [isStartGame, setIsStartGame] = useState(false);
 	const [isContinueGame, setIsContinueGame] = useState(false);
 	const [saveGame, setSaveGame] = useState(null);
@@ -43,9 +45,14 @@ const App = () => {
 	}, []);
 
 	useEffect(() => {
-		setPlayer(playerData);
-	}, [playerData])
-	console.log(`player`, player)
+		if (playerData.stats.hp > 0) {
+			setPlayer(playerData);
+		} else {
+			setShowEndGameScreen(true);
+		}
+
+	}, [playerData]);
+
 	useEffect(() => {
 		if (isContinueGame) {
 			dispatch(updatePlayer(saveGame.player))
@@ -181,90 +188,97 @@ const App = () => {
 	}
 
 	return (
-		<div className="App" >
+		<div className="App" id='App' >
 			{
-				showIngameMenu &&
-				<IngameMenu
-					closeMenu={handleKeypress}
-					onCloseMenu={() => setShowIngameMenu(false)}
-					onSaveGame={handleSaveGame} />
+				!showEndGameScreen
+					? <React.Fragment>
+						{
+							showIngameMenu &&
+							<IngameMenu
+								closeMenu={handleKeypress}
+								onCloseMenu={() => setShowIngameMenu(false)}
+								onSaveGame={handleSaveGame} />
+						}
+						<AnimatePresence>
+							{
+								!isStartGame &&
+								<motion.div className="first_screen"
+									initial={{ opacity: 1 }}
+									transition={{ duration: 1 }}
+									exit={{ opacity: 0 }}>
+									<img className="bg_image" src={openningBackGround} alt="" />
+									<div className='start-btn-group'>
+										{saveGame && <button className="btn_start btn" onClick={continueGame}>Continue</button>}
+										<button className="btn_start btn" onClick={startGame}>Start!</button>
+									</div>
+								</motion.div>
+							}
+						</AnimatePresence>
+						{
+							isStartGame &&
+							<div className="game_screen" style={{ backgroundImage: `url(${DarkBG})` }} tabIndex="0" onKeyDown={handleKeypress} >
+								{
+									currentEvent !== null &&
+									<header className='game-header'>
+										<img src={`${PUBLIC_URL}/hamburger_menu.png`} alt='menu' width={30} height={30} onClick={() => setShowIngameMenu(!showIngameMenu)} />
+									</header>
+								}
+								<aside className="side-bar character-detail__sidebar">
+									{
+										player.name !== '' &&
+										<CharacterStats player={player} />
+									}
+								</aside>
+								<main className="main-screen">
+									{
+										showCreateCharacterScreen &&
+										<CreateCharacter startGame={onShowWelcomeScreen} />
+									}
+									{
+										showWelcomeScreen &&
+										<AnimatePresence>
+											<motion.div className="container"
+												initial={{ opacity: 0 }}
+												transition={{ duration: 1 }}
+												animate={{ opacity: 1 }}>
+												<WelcomeScreen toFightScreen={getEvent} />
+											</motion.div>
+										</AnimatePresence>
+									}
+									{
+										showFightScreen &&
+										<AnimatePresence>
+											<motion.div className="container"
+												initial={{ opacity: 0 }}
+												transition={{ duration: 1 }}
+												animate={{ opacity: 1 }}>
+												<BattleScreen
+													player={player}
+													comData={enemy}
+													comKey={enemy.key}
+													getEvent={getEvent} />
+											</motion.div>
+										</AnimatePresence>
+									}
+									{
+										showLootScreen &&
+										<AnimatePresence>
+											<motion.div className="container"
+												initial={{ opacity: 0 }}
+												transition={{ duration: 1 }}
+												animate={{ opacity: 1 }}>
+												<LootScreen item={loot} takeItem={takeItem} leaveItem={leaveItem} />
+											</motion.div>
+										</AnimatePresence>
+									}
+								</main>
+								<aside className="side-bar help__sidebar"></aside>
+							</div>
+						}
+					</React.Fragment>
+					: <EndGameScreen />
 			}
-			<AnimatePresence>
-				{
-					!isStartGame &&
-					<motion.div className="first_screen"
-						initial={{ opacity: 1 }}
-						transition={{ duration: 1 }}
-						exit={{ opacity: 0 }}>
-						<img className="bg_image" src={openningBackGround} alt="" />
-						<div className='start-btn-group'>
-							{saveGame && <button className="btn_start btn" onClick={continueGame}>Continue</button>}
-							<button className="btn_start btn" onClick={startGame}>Start!</button>
-						</div>
-					</motion.div>
-				}
-			</AnimatePresence>
-			{
-				isStartGame &&
-				<div className="game_screen" style={{ backgroundImage: `url(${DarkBG})` }} tabIndex="0" onKeyDown={handleKeypress} >
-					{
-						currentEvent !== null &&
-						<header className='game-header'>
-							<img src={`${PUBLIC_URL}/hamburger_menu.png`} alt='menu' width={30} height={30} onClick={() => setShowIngameMenu(!showIngameMenu)} />
-						</header>
-					}
-					<aside className="side-bar character-detail__sidebar">
-						{
-							player.name !== '' &&
-							<CharacterStats player={player} />
-						}
-					</aside>
-					<main className="main-screen">
-						{
-							showCreateCharacterScreen &&
-							<CreateCharacter startGame={onShowWelcomeScreen} />
-						}
-						{
-							showWelcomeScreen &&
-							<AnimatePresence>
-								<motion.div className="container"
-									initial={{ opacity: 0 }}
-									transition={{ duration: 1 }}
-									animate={{ opacity: 1 }}>
-									<WelcomeScreen toFightScreen={getEvent} />
-								</motion.div>
-							</AnimatePresence>
-						}
-						{
-							showFightScreen &&
-							<AnimatePresence>
-								<motion.div className="container"
-									initial={{ opacity: 0 }}
-									transition={{ duration: 1 }}
-									animate={{ opacity: 1 }}>
-									<BattleScreen
-										player={player}
-										comData={enemy}
-										comKey={enemy.key}
-										getEvent={getEvent} />
-								</motion.div>
-							</AnimatePresence>
-						}
-						{
-							showLootScreen &&
-							<AnimatePresence>
-								<motion.div className="container"
-									initial={{ opacity: 0 }}
-									transition={{ duration: 1 }}
-									animate={{ opacity: 1 }}>
-									<LootScreen item={loot} takeItem={takeItem} leaveItem={leaveItem} />
-								</motion.div>
-							</AnimatePresence>
-						}
-					</main>
-					<aside className="side-bar help__sidebar"></aside>
-				</div>
-			}
+
 		</div>
 	);
 }

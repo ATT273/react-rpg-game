@@ -66,8 +66,6 @@ const CreateCharacter = ({ startGame }) => {
         setCreatePlayer(prevState => ({ ...prevState, plClass: data.value }))
         // setCreatePlayer(prevState => ({ ...prevState, plClass: data.value, bonusStats }));
     }
-    console.log(`createPlayer`, createPlayer)
-    console.log(`selectedClass`, selectedClass)
     const handleUserInput = (e) => {
         let statsError;
         const name = e.target.name;
