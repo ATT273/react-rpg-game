@@ -20,6 +20,10 @@ class Game {
         return { attacker, target, type, combatLog }
     }
 
+    static skillUsing(attacker, target, skill) {
+
+    }
+
     static winCondition(player, com) {
         if (player.stats.hp === 0) {
             return {
