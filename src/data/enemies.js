@@ -12,6 +12,7 @@ const enemies = [
         name: 'Tiger',
         image: tiger,
         xp: 20,
+        score: 20,
         matchLvl: [1, 2, 3],
         stats: {
             hp: 20,
@@ -30,6 +31,7 @@ const enemies = [
         image: orc,
         matchLvl: [3, 4, 5],
         xp: 40,
+        score: 50,
         stats: {
             hp: 45,
             maxHP: 45,
@@ -47,6 +49,7 @@ const enemies = [
         image: dragon,
         matchLvl: [5, 6, 7, 8],
         xp: 255,
+        score: 100,
         stats: {
             hp: 100,
             mp: 30,
@@ -64,6 +67,7 @@ const enemies = [
         image: Slime,
         matchLvl: [1, 2],
         xp: 5,
+        score: 3,
         stats: {
             hp: 10,
             mp: 10,
@@ -81,6 +85,7 @@ const enemies = [
         image: Cobra,
         matchLvl: [2, 3],
         xp: 16,
+        score: 10,
         stats: {
             hp: 15,
             mp: 10,
@@ -98,6 +103,7 @@ const enemies = [
         image: Rat,
         matchLvl: [1, 2],
         xp: 7,
+        score: 5,
         stats: {
             hp: 10,
             mp: 10,

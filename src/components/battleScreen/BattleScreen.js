@@ -11,7 +11,7 @@ import * as _ from 'lodash';
 import { ReactComponent as Loading } from '../../images/svgs/loading.svg';
 
 
-const BattleScreen = ({ getEvent, comData }) => {
+const BattleScreen = ({ getEvent, comData, updateScore }) => {
 
     const playerData = useSelector(Rstate => Rstate.player.player);
     const dispatch = useDispatch();
@@ -182,7 +182,9 @@ const BattleScreen = ({ getEvent, comData }) => {
             _player.exp = playerExp - player.levelExp;
             _player.levelExp = newLevelExp;
         }
-
+        if (_player.stats.hp > 0) {
+            updateScore(com.score);
+        }
         dispatch(updatePlayer(_player));
         getEvent();
     }
