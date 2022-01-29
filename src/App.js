@@ -8,6 +8,7 @@ import CharacterStats from './components/sidebar/CharacterStats';
 import WelcomeScreen from './components/welcomeScreen/WelcomeScreen';
 import EndGameScreen from './components/endGameScreen/EndGameScreen';
 import IngameMenu from './components/UIComponents/IngameMenu';
+import HighScoresScreen from './components/highScoreScreen/HighScoreScreen';
 import Game from './game';
 import openningBackGround from './images/background/back_ground.jpg';
 import DarkBG from './images/background/dark_bg.jpg';
@@ -22,6 +23,7 @@ const App = () => {
 	const [enemy, setEnemy] = useState({ type: 'com' });
 	const [player, setPlayer] = useState({});
 	const [loot, setLoot] = useState({});
+	const [score, setScore] = useState(0);
 
 
 	const [showWelcomeScreen, setShowWelcomeScreen] = useState(false);
@@ -29,7 +31,8 @@ const App = () => {
 	const [showFightScreen, setShowFightScreen] = useState(false);
 	const [showLootScreen, setShowLootScreen] = useState(false);
 	const [showIngameMenu, setShowIngameMenu] = useState(false);
-	const [showEndGameScreen, setShowEndGameScreen] = useState(false)
+	const [showEndGameScreen, setShowEndGameScreen] = useState(false);
+	const [showHighScoresScreen, setShowHighScoresScreen] = useState(false);
 	const [isStartGame, setIsStartGame] = useState(false);
 	const [isContinueGame, setIsContinueGame] = useState(false);
 	const [saveGame, setSaveGame] = useState(null);
@@ -39,8 +42,10 @@ const App = () => {
 
 	useEffect(() => {
 		const localSaveGame = localStorage.getItem('saveGame');
+		const _score = localStorage.getItem('_score');
 		if (localSaveGame) {
 			setSaveGame(JSON.parse(localSaveGame));
+			setScore(_score ?? 0);
 		}
 	}, []);
 
@@ -81,6 +86,11 @@ const App = () => {
 	const startGame = () => {
 		setIsStartGame(true);
 		setShowCreateCharacterScreen(true);
+	}
+
+	const showHighScores = () => {
+		setShowHighScoresScreen(true);
+		// setShowCreateCharacterScreen(true);
 	}
 
 	const continueGame = () => {
@@ -187,6 +197,11 @@ const App = () => {
 		}
 	}
 
+	const updateScore = (_score) => {
+		const newScore = score + _score;
+		setScore(newScore);
+	}
+
 	return (
 		<div className="App" id='App' >
 			{
@@ -202,16 +217,28 @@ const App = () => {
 						<AnimatePresence>
 							{
 								!isStartGame &&
-								<motion.div className="first_screen"
-									initial={{ opacity: 1 }}
-									transition={{ duration: 1 }}
-									exit={{ opacity: 0 }}>
-									<img className="bg_image" src={openningBackGround} alt="" />
-									<div className='start-btn-group'>
-										{saveGame && <button className="btn_start btn" onClick={continueGame}>Continue</button>}
-										<button className="btn_start btn" onClick={startGame}>Start!</button>
-									</div>
-								</motion.div>
+								<React.Fragment>
+									{
+										!showHighScoresScreen
+											? <motion.div className="first_screen"
+												initial={{ opacity: 1 }}
+												transition={{ duration: 1 }}
+												exit={{ opacity: 0 }}>
+												<img className="bg_image" src={openningBackGround} alt="" />
+												<div className='start-btn-group'>
+													{saveGame && <button className="btn_start btn" onClick={continueGame}>Continue</button>}
+													<button className="btn_start btn" onClick={startGame}>Start!</button>
+													<button className="btn_start btn" onClick={showHighScores}>High scores</button>
+												</div>
+											</motion.div>
+											: <motion.div className="first_screen"
+												initial={{ opacity: 1 }}
+												transition={{ duration: 1 }}
+												exit={{ opacity: 0 }}>
+												<HighScoresScreen />
+											</motion.div>
+									}
+								</React.Fragment>
 							}
 						</AnimatePresence>
 						{
@@ -256,7 +283,8 @@ const App = () => {
 													player={player}
 													comData={enemy}
 													comKey={enemy.key}
-													getEvent={getEvent} />
+													getEvent={getEvent}
+													updateScore={updateScore} />
 											</motion.div>
 										</AnimatePresence>
 									}
@@ -276,7 +304,7 @@ const App = () => {
 							</div>
 						}
 					</React.Fragment>
-					: <EndGameScreen />
+					: <EndGameScreen scores={score} playerName={playerData.name} />
 			}
 
 		</div>
