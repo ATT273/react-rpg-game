@@ -29,7 +29,7 @@ export const playerSlice = createSlice({
                 spd: 0
             },
             items: []
-        },
+        }
     },
     reducers: {
         createCharacter: (state, action) => {
