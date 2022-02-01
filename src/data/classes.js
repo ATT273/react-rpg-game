@@ -1,6 +1,7 @@
 import knight from '../images/classes/knight.jpg';
 import warrior from '../images/classes/warrior.jpg';
 import assassin from '../images/classes/assassin.jpg';
+import mage from '../images/classes/mage.jpg';
 
 const classes = {
     knight: {
@@ -15,14 +16,16 @@ const classes = {
                 key: 'holy_strike',
                 name: 'Holy Strike',
                 target: 'enemy',
+                cost: 10,
                 effects: [
-                    { stats: 'hp', value: -5 }
+                    { stats: 'hp', value: -10 }
                 ]
             },
             {
                 key: 'iron_skin',
                 name: 'Iron Skin',
                 target: 'self',
+                cost: 20,
                 effects: [
                     { stats: 'def', value: 5 }
                 ]
@@ -31,6 +34,7 @@ const classes = {
                 key: 'holy_water',
                 name: 'Holy Water',
                 target: 'self',
+                cost: 20,
                 effects: [
                     { stats: 'def', value: 3 },
                     { stats: 'atk', value: 3 }
@@ -90,16 +94,16 @@ const classes = {
                 target: 'enemy',
                 cost: 15,
                 effects: [
-                    { stats: 'hp', value: -8 }
+                    { stats: 'hp', value: -15 }
                 ]
             },
             {
                 key: 'ambus_and_assassinate',
                 name: 'Ambus and assassinate',
                 target: 'enemy',
-                cost: 20,
+                cost: 25,
                 effects: [
-                    { stats: 'hp', value: -15 },
+                    { stats: 'hp', value: -25 },
                 ]
             },
             {
@@ -108,7 +112,7 @@ const classes = {
                 target: 'enemy',
                 cost: 10,
                 effects: [
-                    { stats: 'hp', value: -5 }
+                    { stats: 'hp', value: -10 }
                 ]
             }
         ]
@@ -116,7 +120,7 @@ const classes = {
     mage: {
         key: 'mage',
         name: 'Mage',
-        image: '',
+        image: mage,
         bonuses: {
             int: 1
         },
@@ -127,16 +131,16 @@ const classes = {
                 target: 'enemy',
                 cost: 10,
                 effects: [
-                    { stats: 'hp', value: -10 }
+                    { stats: 'hp', value: -15 }
                 ]
             },
             {
                 key: 'ice_shard',
-                name: 'ice shard',
+                name: 'Ice shard',
                 target: 'enemy',
                 cost: 5,
                 effects: [
-                    { stats: 'hp', value: -7 },
+                    { stats: 'hp', value: -9 },
                 ]
             },
             {

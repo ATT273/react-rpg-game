@@ -9,8 +9,9 @@ class Game {
 
     static normalAttack(attacker, target) {
         const bonusStats = this.getBonusStats(attacker.type === 'player' ? attacker.items : target.items);
-        const atkAttacker = attacker.type === 'player' ? (attacker.stats.atk + bonusStats.atk) : attacker.stats.atk;
-        const defTarget = target.type === 'player' ? (target.stats.def + bonusStats.def) : target.stats.def;
+        const buffs = attacker.type === 'player' ? attacker.buffs : null;
+        const atkAttacker = attacker.type === 'player' ? (attacker.stats.atk + bonusStats.atk + attacker.buffs.atk) : attacker.stats.atk;
+        const defTarget = target.type === 'player' ? (target.stats.def + bonusStats.def + target.buffs.def) : target.stats.def;
         const dmgDealed = (atkAttacker - defTarget) > 0 ? atkAttacker - defTarget : 0
         let type = attacker.type
         target.stats.hp = (target.stats.hp - dmgDealed) < 0 ? 0 : target.stats.hp - dmgDealed
@@ -21,6 +22,40 @@ class Game {
     }
 
     static skillUsing(attacker, target, skill) {
+        // let dmgDealed = 0;
+        if (skill.target === 'enemy') {
+            const atkAttacker = Math.abs(skill.effects[0].value);
+            const defTarget = target.stats.def;
+            const dmgDealed = (atkAttacker - defTarget) > 0 ? atkAttacker - defTarget : 0
+            const type = attacker.type;
+            target.stats.hp = (target.stats.hp - dmgDealed) < 0 ? 0 : target.stats.hp - dmgDealed;
+            attacker.stats.mp -= skill.cost;
+
+            const combatLog = `${attacker.name} used ${skill.name} => deals ${dmgDealed} damage`;
+
+            return { attacker, target, type, combatLog }
+        }
+        if (skill.target === 'self') {
+            const buffs = {
+                atk: 0,
+                def: 0,
+                spd: 0,
+                hp: 0,
+            }
+            skill.effects.forEach(fx => {
+                buffs[fx.stats] += fx.value;
+            })
+
+            attacker.buffs = { ...buffs };
+            if (buffs.hp > 0) {
+                attacker.stats.hp += buffs.hp;
+            }
+
+            attacker.stats.mp -= skill.cost;
+            const type = attacker.type;
+            const combatLog = `${attacker.name} used ${skill.name}`;
+            return { attacker, target, type, combatLog }
+        }
 
     }
 

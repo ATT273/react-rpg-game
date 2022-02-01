@@ -96,6 +96,7 @@ input[type=number] {
   width: 100%;
   background-color: var(--create-character-bg);
   border-radius: 6px;
+  padding: 15px;
   /* background-color: var(--app-bg); */
 }
 
@@ -126,7 +127,6 @@ input[type=number] {
 
 .character-classes__container {
   display: flex;
-  margin-bottom: 50px;
 }
 
 .character-classes__container .item {
@@ -134,8 +134,9 @@ input[type=number] {
   flex-direction: column;
   align-items: center;
   width: 250px;
-  margin-right: 25px;
+  margin-right: 5px;
   overflow: hidden;
+  position: relative;
 }
 
 .character-classes__container .item:last-child {
@@ -172,6 +173,53 @@ input[type=number] {
 .character-classes__container .item .image-container:hover + .class-title,
 .character-classes__container .item.active .image-container + .class-title {
   color: goldenrod;
+}
+
+.create-character .character-classes {
+  margin-bottom: 15px;
+}
+.create-character__form .btn-group {
+  text-align: center;
+}
+
+.character-classes__container .item.active {
+  overflow: unset;
+}
+
+.create-character__form .skills-container .skill-item {
+  display: flex;
+  flex-direction: row;
+  height: 35px;
+  padding-left: 10px;
+  cursor: pointer;
+}
+.create-character__form .skills-container .skill-item.active {
+  background-color: rgba(160, 160, 160, 0.3);
+  border-left: solid goldenrod 3px;
+}
+.create-character .skills-container .name,
+.create-character .skills-container .cost,
+.create-character .skills-container .target-self,
+.create-character .skills-container .target-enemy,
+.create-character .skills-container .effects {
+  line-height: 35px;
+  margin-right: 10px;
+}
+.create-character .skills-container .name {
+  color: goldenrod;
+  font-weight: bold;
+}
+.create-character .skills-container .cost {
+  color: aqua;
+}
+.create-character .skills-container .target-self {
+  color: lightgreen;
+}
+.create-character .skills-container .target-enemy {
+  color: #d43445;
+}
+.create-character .skills-container .effects {
+  color: #fff;
 }
 
 /* WELCOME SCREEN */
@@ -569,6 +617,9 @@ ul.item-menu li:hover {
 
 .txt-green {
   color: green;
+}
+.txt-purple {
+  color: purple;
 }
 .bg-green {
   background-color: #b3dd9e!important;
