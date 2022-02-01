@@ -10,7 +10,11 @@ import { updateStats, updatePlayer } from '../../store/player/playerSlice';
 import * as _ from 'lodash';
 import { ReactComponent as Loading } from '../../images/svgs/loading.svg';
 
-
+const initiateBuffs = {
+    atk: 0,
+    def: 0,
+    spd: 0
+}
 const BattleScreen = ({ getEvent, comData, updateScore }) => {
 
     const playerData = useSelector(Rstate => Rstate.player.player);
@@ -48,7 +52,7 @@ const BattleScreen = ({ getEvent, comData, updateScore }) => {
         const _player = _.cloneDeep(playerData);
         const _com = _.cloneDeep(comData);
         if (isPlayerTurn === undefined) {
-            const _isPlayerTurn = _player.stats.spd > _com.stats.spd ? true : false;
+            const _isPlayerTurn = _player.stats.spd + _player.bonusStats.spd > _com.stats.spd ? true : false;
             setisPlayerTurn(_isPlayerTurn);
         }
         setPlayer(_player);
@@ -171,10 +175,30 @@ const BattleScreen = ({ getEvent, comData, updateScore }) => {
         }
     }
 
+    const handleSkillBtnClick = (key) => {
+        const skillUsed = player.skills.find(skill => skill.key === key);
+        const afterAtk = Game.skillUsing(player, com, skillUsed);
+        setPlayer(afterAtk.attacker);
+        setCom(afterAtk.target);
+
+        setState(prev => ({
+            ...prev,
+            battleLogs: [...state.battleLogs, afterAtk.combatLog]
+        }))
+
+        if (!isPlayerTurn) {
+            setTimeout(() => {
+                handleEndturn();
+            }, 500)
+        } else {
+            handleEndturn();
+        }
+    }
     const handleNextBtnClick = () => {
         const _player = { ...player };
         const playerExp = player.exp + com.xp;
         _player.exp = playerExp;
+        _player.buffs = { ...initiateBuffs };
         if (playerExp >= player.levelExp) {
             const nextLvl = Game.calculateLvlFromExp(playerExp);
             const newLevelExp = Game.calculateCurrentLvlExp(Math.floor(nextLvl) + 1);
@@ -221,7 +245,12 @@ const BattleScreen = ({ getEvent, comData, updateScore }) => {
                         exit={{ opacity: 0 }}>
                         {player !== null && renderFighters()}
                         {showPlayerActionBlock
-                            ? <PlayerActionsBlock handleAtkButtonClick={handleAtkButtonClick} showComTurn={state.showComTurn} />
+                            ? <PlayerActionsBlock
+                                handleAtkButtonClick={handleAtkButtonClick}
+                                handleSkillBtnClick={handleSkillBtnClick}
+                                showComTurn={state.showComTurn}
+                                player={player}
+                            />
                             : <Loading />}
                         <BattleLog battleLogs={state.battleLogs} />
                         {

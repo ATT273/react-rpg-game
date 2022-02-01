@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import player_img from '../../images/player/player.png'
+import player_img from '../../images/player/player.jpg'
 import StatsBar from '../UIComponents/StatsBar'
 import { useSelector, useDispatch } from 'react-redux';
 import InventoryBlock from './components/InventoryBlock';
@@ -65,13 +65,23 @@ const CharacterStats = () => {
                         <p><b>Lvl {player.level}: </b> {player.exp}/{player.levelExp}</p>
                     </div>
                     <div className="item">
-                        <p><b>ATK: </b> {player.stats.atk} <i className='txt-green'>{player.bonusStats.atk > 0 ? `(+ ${player.bonusStats.atk})` : ''}</i></p>
+                        <p>
+                            <b>ATK: </b> {player.stats.atk}
+                            <i className='txt-green'>{player.bonusStats.atk > 0 ? `(+ ${player.bonusStats.atk})` : ''}</i>
+                            <i className='txt-purple'>{player.buffs.atk > 0 ? `(+ ${player.buffs.atk})` : ''}</i>
+                        </p>
                     </div>
                     <div className="item">
-                        <p><b>DEF: </b> {player.stats.def} <i className='txt-green'>{player.bonusStats.def > 0 ? `(+ ${player.bonusStats.def})` : ''}</i></p>
+                        <p><b>DEF: </b> {player.stats.def}
+                            <i className='txt-green'>{player.bonusStats.def > 0 ? `(+ ${player.bonusStats.def})` : ''}</i>
+                            <i className='txt-purple'>{player.buffs.def > 0 ? `(+ ${player.buffs.def})` : ''}</i>
+                        </p>
                     </div>
                     <div className="item">
-                        <p><b>SPD: </b> {player.stats.spd} <i className='txt-green'>{player.bonusStats.spd > 0 ? `(+ ${player.bonusStats.spd})` : ''}</i></p>
+                        <p><b>SPD: </b> {player.stats.spd}
+                            <i className='txt-green'>{player.bonusStats.spd > 0 ? `(+ ${player.bonusStats.spd})` : ''}</i>
+                            <i className='txt-purple'>{player.buffs.spd > 0 ? `(+ ${player.buffs.spd})` : ''}</i>
+                        </p>
                     </div>
                 </div>
             </div>

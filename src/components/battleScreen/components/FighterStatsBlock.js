@@ -20,9 +20,18 @@ function FighterStatsBlock(props) {
                             <StatsBar stats={{ mp: player.stats.mp, maxMP: player.stats.maxMP }} name={'mp'} />
                         </div>
                         <div className="stats">
-                            <p><b>ATK: </b> {player.stats.atk}</p>
-                            <p><b>DEF: </b> {player.stats.def}</p>
-                            <p><b>SPD: </b> {player.stats.spd}</p>
+                            <p><b>ATK: </b> {player.stats.atk}
+                                <i className='txt-green'>{player.bonusStats.atk > 0 ? `(+ ${player.bonusStats.atk})` : ''}</i>
+                                <i className='txt-purple'>{player.buffs.atk > 0 ? `(+ ${player.buffs.atk})` : ''}</i>
+                            </p>
+                            <p><b>DEF: </b> {player.stats.def}
+                                <i className='txt-green'>{player.bonusStats.def > 0 ? `(+ ${player.bonusStats.def})` : ''}</i>
+                                <i className='txt-purple'>{player.buffs.def > 0 ? `(+ ${player.buffs.def})` : ''}</i>
+                            </p>
+                            <p><b>SPD: </b> {player.stats.spd}
+                                <i className='txt-green'>{player.bonusStats.spd > 0 ? `(+ ${player.bonusStats.spd})` : ''}</i>
+                                <i className='txt-purple'>{player.buffs.spd > 0 ? `(+ ${player.buffs.spd})` : ''}</i>
+                            </p>
                         </div>
                     </div>
                     <div className="com">

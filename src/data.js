@@ -1,37 +1,8 @@
 import enemiesData from './data/enemies';
 import itemsData from './data/items';
-import knight from './images/classes/knight.jpg';
-import warrior from './images/classes/warrior.jpg';
-import assassin from './images/classes/assassin.jpg';
+import classesData from './data/classes';
 
-
-
-export const classes = {
-    knight: {
-        key: 'knight',
-        name: 'Knight',
-        image: knight,
-        bonuses: {
-            def: 1,
-        }
-    },
-    warrior: {
-        key: 'warrior',
-        name: 'Warrior',
-        image: warrior,
-        bonuses: {
-            atk: 1,
-        }
-    },
-    assassin: {
-        key: 'assassin',
-        name: 'Assassin',
-        image: assassin,
-        bonuses: {
-            spd: 1,
-        }
-    }
-}
+export const classes = { ...classesData };
 export const enemies = [...enemiesData];
 export const items = [...itemsData];
 

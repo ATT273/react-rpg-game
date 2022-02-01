@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import player_img from '../../images/player/player.png';
+import player_img from '../../images/player/player.jpg';
 
 export const playerSlice = createSlice({
     name: 'player',
@@ -24,6 +24,11 @@ export const playerSlice = createSlice({
             bonusStats: {
                 maxHP: 0,
                 maxMP: 0,
+                atk: 0,
+                def: 0,
+                spd: 0
+            },
+            buffs: {
                 atk: 0,
                 def: 0,
                 spd: 0

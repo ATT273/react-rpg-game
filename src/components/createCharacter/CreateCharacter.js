@@ -4,14 +4,15 @@ import { classes } from '../../data'
 import { useSelector, useDispatch } from 'react-redux';
 import { createCharacter } from '../../store/player/playerSlice';
 import Game from '../../game';
+import SkillSelection from './SkillSelection';
 
 const CreateCharacter = ({ startGame }) => {
     const dispatch = useDispatch();
     const player = useSelector(state => state.player.player);
     const [createPlayer, setCreatePlayer] = useState({});
     const [selectedClass, setSelectedClass] = useState({});
+    const [selectedSkill, setSelectedSkill] = useState({});
     const [errors, setErrors] = useState({});
-
     useEffect(() => {
         const initPlayer = Object.assign({}, player);
         const levelExp = Game.calculateCurrentLvlExp(1);
@@ -48,6 +49,9 @@ const CreateCharacter = ({ startGame }) => {
         } else if (createPlayer.plClass === '') {
             setErrors(prevState => ({ ...prevState, classError: 'Please choose your class' }));
             err = true
+        } else if (createPlayer.skills.length === 0) {
+            setErrors(prevState => ({ ...prevState, classError: 'Please choose your skill' }));
+            err = true
         }
         if (!err) {
             Object.keys(selectedClass.bonuses).map(key => {
@@ -63,7 +67,8 @@ const CreateCharacter = ({ startGame }) => {
 
     const handleSelectClass = (data) => {
         setSelectedClass(data);
-        setCreatePlayer(prevState => ({ ...prevState, plClass: data.value }))
+        setSelectedSkill({});
+        setCreatePlayer(prevState => ({ ...prevState, plClass: data.value, skills: [] }))
         // setCreatePlayer(prevState => ({ ...prevState, plClass: data.value, bonusStats }));
     }
     const handleUserInput = (e) => {
@@ -82,6 +87,10 @@ const CreateCharacter = ({ startGame }) => {
         }
     }
 
+    const handleChooseSkill = (data) => {
+        setSelectedSkill(data);
+        setCreatePlayer(prevState => ({ ...prevState, skills: [data] }))
+    }
     return (
         <div className='create-character'>
             <div className='create-character__title'>
@@ -119,7 +128,13 @@ const CreateCharacter = ({ startGame }) => {
                         </div>
                         <p className='error'>{errors.classError}</p>
                     </div>
-                    <button type='submit' className='btn bg-red btn-large' onClick={handleCreateCharacter}>CREATE</button>
+                    {
+                        selectedClass.value &&
+                        <SkillSelection skills={selectedClass.skills} selectedSkill={selectedSkill.key} handleChooseSkill={handleChooseSkill} />
+                    }
+                    <div className='btn-group'>
+                        <button type='submit' className='btn bg-red btn-large create-btn' onClick={handleCreateCharacter}>CREATE</button>
+                    </div>
                     {/* </form> */}
                 </div>
 

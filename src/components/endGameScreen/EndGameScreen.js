@@ -6,6 +6,7 @@ const BASE_URL = 'https://node-server-api-1.herokuapp.com';
 
 const EndGameScreen = ({ scores, playerName }) => {
     const [highscoreResult, setHighscoreResult] = useState(false);
+
     useEffect(() => {
         if (playerName) {
             fetch(`${BASE_URL}/scores`, {
