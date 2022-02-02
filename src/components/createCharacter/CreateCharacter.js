@@ -118,6 +118,7 @@ const CreateCharacter = ({ startGame }) => {
                             <label className='form-label'>Speed</label>
                             <input type='number' className='form-input stats-input' name='spd' placeholder="" onChange={handleUserInput} />
                         </div>
+
                         <p className='error'>{errors.statsError}</p>
                     </div>
 
