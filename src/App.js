@@ -247,10 +247,11 @@ const App = () => {
 								{
 									currentEvent !== null &&
 									<header className='game-header'>
+										<span className='header-scores'>Scores: {score}</span>
 										<img src={`${PUBLIC_URL}/hamburger_menu.png`} alt='menu' width={30} height={30} onClick={() => setShowIngameMenu(!showIngameMenu)} />
 									</header>
 								}
-								<aside className="side-bar character-detail__sidebar">
+								<aside className={`side-bar character-detail__sidebar ${player.name !== '' ? 'show-mb' : 'hide-mb'}`}>
 									{
 										player.name !== '' &&
 										<CharacterStats player={player} />

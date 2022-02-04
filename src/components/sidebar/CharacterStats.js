@@ -50,7 +50,7 @@ const CharacterStats = () => {
                     <img src={player_img} alt="player_avatar" />
                 </div>
                 <div className="player-stats">
-                    <div className="item">
+                    <div className="item player-name">
                         <p><b>{player.name}</b></p>
                     </div>
                     <div className="item">
@@ -61,7 +61,7 @@ const CharacterStats = () => {
                         <p><b>MP: </b> {player.stats.mp}/{player.stats.maxMP} <i className='txt-green'>{player.bonusStats.mp > 0 ? `(+ ${player.bonusStats.mp})` : ''}</i></p>
                         <StatsBar stats={{ mp: player.stats.mp, maxMP: player.stats.maxMP }} name={'mp'} />
                     </div>
-                    <div className="item">
+                    <div className="item level">
                         <p><b>Lvl {player.level}: </b> {player.exp}/{player.levelExp}</p>
                     </div>
                     <div className="item">

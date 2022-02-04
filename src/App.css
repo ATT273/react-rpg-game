@@ -766,12 +766,19 @@ ul.item-menu li:hover {
 .highscores-screen .container table {
   table-layout: fixed;
 }
+.header-scores {
+  flex-grow: 1;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+}
 
+/* RESPONSIVE */
 @media screen and (max-width: 600px) {
  .help__sidebar {
     display: none;
   }
- .game_screen {
+  .game_screen {
     flex-wrap: nowrap;
     flex-direction: column-reverse;
     overflow: auto;
@@ -781,7 +788,12 @@ ul.item-menu li:hover {
     height: 200px;
     /* display: none; */
   }
-
+  .character-detail__sidebar.show-mb {
+    display: block;
+  }
+  .character-detail__sidebar.hide-mb {
+    display: none;
+  }
   .main-screen {
     width: 100%;
     max-width: 1000px;
@@ -793,6 +805,7 @@ ul.item-menu li:hover {
   .create-character {
     height: unset;
     box-sizing: border-box;
+    height: 100%;
   }
   .create-character__form {
     display: block;
@@ -837,5 +850,57 @@ ul.item-menu li:hover {
   .create-character .skills-container .target-enemy,
   .create-character .skills-container .effects {
     font-size: 12px;
+  }
+
+
+  .character-detail__sidebar .stats .player-avatar {
+    flex-basis: 100px;
+    margin-right: 15px;
+  }
+
+  .character-detail__sidebar .stats .player-stats {
+    display: flex;
+    flex-wrap: wrap;
+    /* flex-basis: calc(50% - 15px); */
+    flex-grow: 1;
+    font-size: 12px;
+  }
+  .character-detail__sidebar .stats .player-stats .item {
+    flex-grow: 1;
+  }
+  .character-detail__sidebar .stats .player-stats .item.player-name,
+  .character-detail__sidebar .stats .player-stats .item.level {
+    flex-basis: 100%;
+  }
+  .character-detail__sidebar .player-inventory {
+    height: 85px;
+    width: unset;
+    display: flex;
+    /* flex-wrap: wrap; */
+    /* margin: 0 auto; */
+  }
+  
+  .character-detail__sidebar .player-inventory .item {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border: 1.5px solid #fff;
+  }
+  .player-actions button {
+    width: 180px !important;
+  }
+
+  .fighters-stats .player img,
+  .fighters-stats .com img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+
+  .header-scores {
+    flex-grow: 1;
+    font-weight: bold;
+    display: block;
+    text-align: center;
   }
 }
