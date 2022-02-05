@@ -15,7 +15,7 @@ import DarkBG from './images/background/dark_bg.jpg';
 import { enemies, items } from './data'
 import { useSelector, useDispatch } from 'react-redux';
 import { updateStats, updateInventory, updateBonusStats, updatePlayer } from './store/player/playerSlice';
-
+const feedbackLink = 'https://docs.google.com/forms/d/e/1FAIpQLSc20d_rsBd5TJQDf6V56E7DCdpeX16wJ452LYKZUH1sVw6DaA/viewform';
 const PUBLIC_URL = process.env.PUBLIC_URL;
 const App = () => {
 	const [currentEvent, setCurrentEvent] = useState(null);
@@ -229,7 +229,9 @@ const App = () => {
 													{saveGame && <button className="btn_start btn" onClick={continueGame}>Continue</button>}
 													<button className="btn_start btn" onClick={startGame}>Start!</button>
 													<button className="btn_start btn" onClick={showHighScores}>High scores</button>
+													<a href={feedbackLink} target='_blank' className='send-feedback'>Đóng góp ý kiến</a>
 												</div>
+												<div className='version'>version 0.0.1</div>
 											</motion.div>
 											: <motion.div className="first_screen"
 												initial={{ opacity: 1 }}
