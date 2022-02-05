@@ -773,6 +773,22 @@ ul.item-menu li:hover {
   text-align: center;
 }
 
+.send-feedback {
+  text-decoration: none;
+  color: #fff;
+  text-align: center;
+}
+
+.first_screen .version {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  left: 50%;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
 /* RESPONSIVE */
 @media screen and (max-width: 600px) {
  .help__sidebar {
