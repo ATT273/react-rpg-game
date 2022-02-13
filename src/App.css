@@ -5,7 +5,8 @@
   --default-bg: rgba(0,0, 25, 0.35);
   --welcome-screen-bg: #2e027d;
   --title-btm-border: #aeaeae;
-  --gray-text: #ababab
+  --gray-text: #ababab;
+  --dark-red: #911614;
 }
 
 * {
@@ -70,6 +71,7 @@ input[type=number] {
 .form-input {
   height: 1.5rem;
   padding: 5px 10px;
+  /* width: 100%; */
   /* border-radius: 5px; */
 }
 
@@ -82,7 +84,7 @@ input[type=number] {
 }
 
 .btn {
-  padding: 10px 0;
+  padding: 10px ;
   cursor: pointer;
   border: none;
   background: none;
@@ -102,8 +104,16 @@ input[type=number] {
   background-color: #d43445!important;
 }
 
+.bg-dark-red {
+  background-color: var(--dark-red);
+}
+
 .btn-large {
   width: 200px;
+  height: 2.5rem;
+}
+.btn-square {
+  width: 2.5rem;
   height: 2.5rem;
 }
 .error {
@@ -306,15 +316,70 @@ input[type=number] {
   background-color: var(--create-character-bg);
   border-radius: 6px;
   padding: 15px;
-
+  box-sizing: border-box;
   /* background-color: var(--app-bg); */
+}
+
+.character-classes__container .class-container .class-info .class-stats {
+  color: #fff;
+  font-weight: bold;
+}
+
+.create-character .stats-note {
+  margin-bottom: 25px;
+  color: #fff;
+}
+
+.class-stats .editable-stats {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.class-stats .editable-stats button,
+.class-stats .editable-stats {
+  color: #fff;
+  font-weight: bold;
+}
+
+.class-stats .editable-stats button {
+  font-size: 18px;
+}
+
+.class-stats .editable-stats button.btn-sub {
+  color: #000;
+  background-color: #fff;
 }
 
 .create-character__form {
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
+.create-character__form .form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.create-character__form .form-container .form-group{
+  width: 100%;
+  text-align: center;
+}
+.create-character__form .form-container .form-group .form-input {
+  height: 1.7rem;
+  width: 500px;
+  padding: 0 0 0 3px;
+  /* padding-right: 5px; */
+}
 .create-character__title h1 {
   display: flex;
   justify-content: center;
@@ -335,10 +400,56 @@ input[type=number] {
   margin-right: 25px;
 }
 
-.character-classes__container {
-  display: flex;
+.character-classes {
+  height: calc(90% - 3rem);
+  width: 100%;
 }
 
+.character-classes__container {
+  display: block;
+  height: 100%;
+}
+
+.character-classes__container .class-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.character-classes__container .class-container .class-image,
+.character-classes__container .class-container .class-info {
+  flex-grow: 1;
+}
+.character-classes__container .class-container .class-image {
+  width: 100%;
+  max-height: 500px;
+  position: relative;
+}
+
+.character-classes__container .class-container .class-image .prev-class::before ,
+.character-classes__container .class-container .class-image .next-class::before  {
+  position: absolute;
+  top: 50%;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fff;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.character-classes__container .class-container .class-image .prev-class::before {
+  left: 50px;
+  content: '<';
+}
+.character-classes__container .class-container .class-image .next-class::before {
+  right: 50px;
+  content: '>';
+}
+.character-classes__container .class-container .class-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
 .character-classes__container .item {
   display: flex;
   flex-direction: column;
@@ -821,12 +932,43 @@ ul.item-menu li:hover {
   .create-character {
     height: unset;
     box-sizing: border-box;
-    height: 100%;
+    color: #fff;
+    /* height: 100%; */
   }
+
+  .create-character .stats-note {
+    margin-bottom: 25px;
+  }
+
   .create-character__form {
     display: block;
     height: 100%;
     justify-content: center;
+  }
+
+  .character-classes {
+    height: unset;
+    width: 100%;
+  }
+
+  .character-classes__container .class-container .class-image .prev-class::before {
+    left: 10px;
+  }
+  .character-classes__container .class-container .class-image .next-class::before {
+    right: 10px;
+  }
+
+  .create-character__form .form-container .form-group .form-input {
+    height: 1.7rem;
+    width: 100%;
+    padding: 0 0 0 3px;
+    /* padding-right: 5px; */
+  }
+
+  .character-classes__container .class-container .class-image img {
+    max-height: 300px;
+    width: 100%;
+    object-fit: contain;
   }
 
   .character-classes__container .item {
@@ -841,15 +983,18 @@ ul.item-menu li:hover {
   .character-classes__container .item.active {
     overflow: hidden;
   }
-  .character-classes__container .item .image-container:hover img {
-    /* transform: scale(1.2, 1.2); */
-  }
+  
   .character-classes__container .item .image-container img {
     width: 100%;
     object-fit: cover;
     transition: transform 1s;
   }
 
+  .character-classes__container .class-container .class-image {
+    width: 100%;
+    max-height: 300px;
+    position: relative;
+  }
   .create-character__form .skills-container {
     display: flex;
     flex-direction: column;

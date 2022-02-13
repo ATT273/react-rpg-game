@@ -5,12 +5,16 @@ import App from './App';
 import store from './store/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+import { RecoilRoot } from 'recoil';
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    {/* <Provider store={store}> */}
+    <RecoilRoot>
       <App />
-    </Provider>
+    </RecoilRoot>
+    {/* </Provider> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

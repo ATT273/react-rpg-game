@@ -13,8 +13,12 @@ import Game from './game';
 import openningBackGround from './images/background/back_ground.jpg';
 import DarkBG from './images/background/dark_bg.jpg';
 import { enemies, items } from './data'
-import { useSelector, useDispatch } from 'react-redux';
-import { updateStats, updateInventory, updateBonusStats, updatePlayer } from './store/player/playerSlice';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { updateStats, updateInventory, updateBonusStats, updatePlayer } from './store/player/playerSlice';
+import { useRecoilState } from 'recoil';
+import { playerState, updatePlayer, updateBonusStats, updateInventory } from './state/player/playerState';
+
+
 const feedbackLink = 'https://docs.google.com/forms/d/e/1FAIpQLSc20d_rsBd5TJQDf6V56E7DCdpeX16wJ452LYKZUH1sVw6DaA/viewform';
 const PUBLIC_URL = process.env.PUBLIC_URL;
 const App = () => {
@@ -37,8 +41,10 @@ const App = () => {
 	const [isContinueGame, setIsContinueGame] = useState(false);
 	const [saveGame, setSaveGame] = useState(null);
 
-	const dispatch = useDispatch();
-	const playerData = useSelector(state => state.player.player);
+	// const dispatch = useDispatch();
+	// const playerData = useSelector(state => state.player.player);
+
+	const [playerData, setPlayerState] = useRecoilState(playerState);
 
 	useEffect(() => {
 		const localSaveGame = localStorage.getItem('saveGame');
@@ -49,18 +55,26 @@ const App = () => {
 		}
 	}, []);
 
+	// useEffect(() => {
+	// 	if (playerData.stats.hp > 0) {
+	// 		setPlayer(playerData);
+	// 	} else {
+	// 		setShowEndGameScreen(true);
+	// 	}
+
+	// }, [playerData]);
 	useEffect(() => {
 		if (playerData.stats.hp > 0) {
 			setPlayer(playerData);
 		} else {
 			setShowEndGameScreen(true);
 		}
-
 	}, [playerData]);
 
 	useEffect(() => {
 		if (isContinueGame) {
-			dispatch(updatePlayer(saveGame.player))
+			const newPlayerData = updatePlayer(saveGame.player)
+			setPlayerState(newPlayerData)
 			setEnemy(saveGame.enemy);
 			setLoot(saveGame.loot);
 			setCurrentEnemy(saveGame.currentEnemy);
@@ -88,6 +102,9 @@ const App = () => {
 		setShowCreateCharacterScreen(true);
 	}
 
+	const savePlayerData = (data) => {
+		setPlayer(data)
+	}
 	const showHighScores = () => {
 		setShowHighScoresScreen(true);
 		// setShowCreateCharacterScreen(true);
@@ -165,8 +182,14 @@ const App = () => {
 			alert(_takeItems.message)
 		} else {
 			const bonusStats = Game.getBonusStats(_takeItems.newInventory);
-			dispatch(updateInventory([..._takeItems.newInventory]));
-			dispatch(updateBonusStats(bonusStats));
+			// const newInventory = updateInventory([..._takeItems.newInventory]);
+			// const newBonusStats = updateBonusStats(bonusStats);
+			const _player = {
+				...player,
+				items: [..._takeItems.newInventory],
+				bonusStats
+			}
+			setPlayerState({ ..._player })
 			getEvent();
 		}
 	}
@@ -237,7 +260,7 @@ const App = () => {
 												initial={{ opacity: 1 }}
 												transition={{ duration: 1 }}
 												exit={{ opacity: 0 }}>
-												<HighScoresScreen />
+												{/* <HighScoresScreen /> */}
 											</motion.div>
 									}
 								</React.Fragment>
@@ -254,15 +277,16 @@ const App = () => {
 									</header>
 								}
 								<aside className={`side-bar character-detail__sidebar ${player.name !== '' ? 'show-mb' : 'hide-mb'}`}>
+									{/* <CharacterStats /> */}
 									{
 										player.name !== '' &&
-										<CharacterStats player={player} />
+										<CharacterStats />
 									}
 								</aside>
 								<main className="main-screen">
 									{
 										showCreateCharacterScreen &&
-										<CreateCharacter startGame={onShowWelcomeScreen} />
+										<CreateCharacter startGame={onShowWelcomeScreen} savePlayerData={savePlayerData} />
 									}
 									{
 										showWelcomeScreen &&
@@ -307,7 +331,7 @@ const App = () => {
 							</div>
 						}
 					</React.Fragment>
-					: <EndGameScreen scores={score} playerName={playerData.name} />
+					: <EndGameScreen scores={score} playerName={'playerState.name'} />
 			}
 
 		</div>
