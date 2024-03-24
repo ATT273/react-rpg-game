@@ -3,14 +3,14 @@ import player_img from '../../images/player/player.jpg'
 import StatsBar from '../UIComponents/StatsBar'
 import { useSelector, useDispatch } from 'react-redux';
 import InventoryBlock from './components/InventoryBlock';
-import { updatePlayer } from '../../store/player/playerSlice';
+// import { updatePlayer } from '../../store/player/playerSlice';
 import Game from '../../game';
 import * as _ from 'lodash';
-
+import { useRecoilState } from 'recoil';
+import { playerState, updatePlayer } from '../../state/player/playerState';
 
 const CharacterStats = () => {
-    const player = useSelector(state => state.player.player);
-    const dispatch = useDispatch();
+    const [player, setPlayerState] = useRecoilState(playerState);
 
     const handleUseItem = (itemKey, itemIndex) => {
         const _player = _.cloneDeep(player);
@@ -29,14 +29,14 @@ const CharacterStats = () => {
         _player.bonusStats = Game.getBonusStats(_player.items);
         const newStats = Game.consumeItem(_player, itemKey);
         _player.stats = { ..._player.stats, ...newStats };
-        dispatch(updatePlayer(_player));
+        updatePlayer(_player);
     }
 
     const handleDropItem = (key, itemIndex) => {
         const _player = _.cloneDeep(player);
         _player.items.splice(itemIndex, 1);
         _player.bonusStats = Game.getBonusStats(_player.items);
-        dispatch(updatePlayer(_player));
+        updatePlayer(_player);
     }
     const renderInventory = () => {
         [0, 1, 2, 3, 4, 5].map(x => {

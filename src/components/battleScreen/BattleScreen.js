@@ -6,9 +6,11 @@ import ReadyPopUp from './components/ReadyPopUp'
 import { motion, AnimatePresence } from 'framer-motion'
 import Game from '../../game'
 import { useSelector, useDispatch } from 'react-redux';
-import { updateStats, updatePlayer } from '../../store/player/playerSlice';
+// import { updateStats, updatePlayer } from '../../store/player/playerSlice';
 import * as _ from 'lodash';
 import { ReactComponent as Loading } from '../../images/svgs/loading.svg';
+import { useRecoilState } from 'recoil';
+import { playerState, updateStats, updatePlayer } from '../../state/player/playerState';
 
 const initiateBuffs = {
     atk: 0,
@@ -16,9 +18,9 @@ const initiateBuffs = {
     spd: 0
 }
 const BattleScreen = ({ getEvent, comData, updateScore }) => {
-
-    const playerData = useSelector(Rstate => Rstate.player.player);
-    const dispatch = useDispatch();
+    const [playerData, setPlayerState] = useRecoilState(playerState);
+    // const playerData = useSelector(Rstate => Rstate.player.player);
+    // const dispatch = useDispatch();
     const [player, setPlayer] = useState({});
     const [com, setCom] = useState({});
     const [isPlayerTurn, setisPlayerTurn] = useState();
@@ -46,7 +48,7 @@ const BattleScreen = ({ getEvent, comData, updateScore }) => {
     useEffect(() => {
         const _player = _.cloneDeep(playerData);
         setPlayer(_player)
-    }, [playerData])
+    }, [playerData]);
 
     useEffect(() => {
         const _player = _.cloneDeep(playerData);
@@ -209,7 +211,8 @@ const BattleScreen = ({ getEvent, comData, updateScore }) => {
         if (_player.stats.hp > 0) {
             updateScore(com.score);
         }
-        dispatch(updatePlayer(_player));
+        const newPlayerData = updatePlayer(_player);
+        setPlayerState(newPlayerData);
         getEvent();
     }
 

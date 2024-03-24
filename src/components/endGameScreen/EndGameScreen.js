@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import openningBackGround from '../../images/background/back_ground.jpg';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 
 const BASE_URL = 'https://node-server-api-1.herokuapp.com';
 

@@ -11,6 +11,16 @@ const classes = {
         bonuses: {
             def: 1,
         },
+        stats: {
+            hp: 50,
+            mp: 100,
+            atk: 5,
+            def: 8,
+            int: 0,
+            spd: 3,
+            maxHP: 50,
+            maxMP: 100,
+        },
         skills: [
             {
                 key: 'holy_strike',
@@ -48,6 +58,16 @@ const classes = {
         image: warrior,
         bonuses: {
             atk: 1,
+        },
+        stats: {
+            hp: 50,
+            mp: 100,
+            atk: 8,
+            def: 5,
+            int: 0,
+            spd: 3,
+            maxHP: 50,
+            maxMP: 100,
         },
         skills: [
             {
@@ -87,6 +107,16 @@ const classes = {
         bonuses: {
             spd: 1,
         },
+        stats: {
+            hp: 30,
+            mp: 100,
+            atk: 8,
+            def: 3,
+            int: 0,
+            spd: 5,
+            maxHP: 30,
+            maxMP: 100,
+        },
         skills: [
             {
                 key: 'backstab',
@@ -123,6 +153,16 @@ const classes = {
         image: mage,
         bonuses: {
             int: 1
+        },
+        stats: {
+            hp: 30,
+            mp: 100,
+            atk: 3,
+            def: 5,
+            int: 5,
+            spd: 3,
+            maxHP: 30,
+            maxMP: 100,
         },
         skills: [
             {
