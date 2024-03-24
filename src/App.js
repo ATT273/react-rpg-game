@@ -11,7 +11,7 @@ import IngameMenu from './components/UIComponents/IngameMenu';
 import HighScoresScreen from './components/highScoreScreen/HighScoreScreen';
 import Game from './game';
 import openningBackGround from './images/background/back_ground.jpg';
-import DarkBG from './images/background/dark_bg.jpg';
+import DarkBG from './images/background/dungeon.jpg';
 import { enemies, items } from './data'
 // import { useSelector, useDispatch } from 'react-redux';
 // import { updateStats, updateInventory, updateBonusStats, updatePlayer } from './store/player/playerSlice';
@@ -102,9 +102,6 @@ const App = () => {
 		setShowCreateCharacterScreen(true);
 	}
 
-	const savePlayerData = (data) => {
-		setPlayer(data)
-	}
 	const showHighScores = () => {
 		setShowHighScoresScreen(true);
 		// setShowCreateCharacterScreen(true);
@@ -268,7 +265,7 @@ const App = () => {
 						</AnimatePresence>
 						{
 							isStartGame &&
-							<div className="game_screen" style={{ backgroundImage: `url(${DarkBG})` }} tabIndex="0" onKeyDown={handleKeypress} >
+							<div className="game_screen" style={{ backgroundImage: `url(${DarkBG})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} tabIndex="0" onKeyDown={handleKeypress} >
 								{
 									currentEvent !== null &&
 									<header className='game-header'>
@@ -276,17 +273,17 @@ const App = () => {
 										<img src={`${PUBLIC_URL}/hamburger_menu.png`} alt='menu' width={30} height={30} onClick={() => setShowIngameMenu(!showIngameMenu)} />
 									</header>
 								}
-								<aside className={`side-bar character-detail__sidebar ${player.name !== '' ? 'show-mb' : 'hide-mb'}`}>
+								<aside className={`side-bar character-detail__sidebar ${playerData.name !== '' ? 'show-mb' : 'hide-mb'}`}>
 									{/* <CharacterStats /> */}
 									{
-										player.name !== '' &&
+										playerData.name !== '' &&
 										<CharacterStats />
 									}
 								</aside>
 								<main className="main-screen">
 									{
 										showCreateCharacterScreen &&
-										<CreateCharacter startGame={onShowWelcomeScreen} savePlayerData={savePlayerData} />
+										<CreateCharacter startGame={onShowWelcomeScreen} />
 									}
 									{
 										showWelcomeScreen &&

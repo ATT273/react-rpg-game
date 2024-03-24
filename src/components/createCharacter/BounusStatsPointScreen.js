@@ -1,27 +1,39 @@
 import React, { useState, useEffect } from 'react'
 
-function BounusStatsPointScreen({ stats, handleUpdateClassData }) {
+function BounusStatsPointScreen({ stats, handleUpdateClassData, handlePrevStep, handleCreate }) {
     const [statsState, setStatsState] = useState({});
     const [points, setPoints] = useState(5);
 
     useEffect(() => {
+        console.log('run');
         setStatsState(stats);
+
     }, []);
 
-    useEffect(() => {
-        handleUpdateClassData({ stats: statsState });
-    }, [statsState]);
+    // useEffect(() => {
+    //     handleUpdateClassData({ stats: statsState });
+    // }, [statsState]);
 
     const handleAddPoint = (type) => {
         const _stats = { ...statsState };
-        _stats[type] += 1;
+        if (type === 'hp') {
+            _stats[type] += 1;
+            _stats['maxHP'] += 1;
+        } else {
+            _stats[type] += 1;
+        }
         setStatsState(_stats);
         setPoints(points - 1);
     }
 
     const handleSubtractPoint = (type) => {
         const _stats = { ...statsState };
-        _stats[type] -= 1;
+        if (type === 'hp') {
+            _stats[type] -= 1;
+            _stats['maxHP'] -= 1;
+        } else {
+            _stats[type] -= 1;
+        }
         setStatsState(_stats);
         setPoints(points + 1);
     }
@@ -61,7 +73,6 @@ function BounusStatsPointScreen({ stats, handleUpdateClassData }) {
                     <p>Def: {statsState.def}</p>
                     <div className='btn-group'>
                         <button className='btn btn-square bg-dark-red' onClick={() => handleAddPoint('def')} disabled={points === 0}>+</button>
-
                         <button
                             className='btn btn-square btn-sub'
                             style={{ opacity: statsState.def > stats.def ? 1 : 0 }}
@@ -96,6 +107,11 @@ function BounusStatsPointScreen({ stats, handleUpdateClassData }) {
                         >-</button>
                     </div>
                 </div>
+
+            </div>
+            <div className='btn-group'>
+                <button className='btn bg-green' onClick={handlePrevStep} style={{ marginRight: '10px' }}>Back</button>
+                <button type='submit' className='btn bg-green' onClick={() => handleCreate(statsState)}>Create</button>
             </div>
         </div>
     )

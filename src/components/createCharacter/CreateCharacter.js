@@ -20,12 +20,21 @@ const CreateCharacter = ({ startGame, savePlayerData }) => {
     const [selectedClass, setSelectedClass] = useState({});
     const [selectedSkill, setSelectedSkill] = useState({});
     const [errors, setErrors] = useState({});
+
     useEffect(() => {
         const initPlayer = Object.assign({}, playerData);
         const levelExp = Game.calculateCurrentLvlExp(1);
         setCreatePlayer(prevState => ({ ...prevState, ...initPlayer, levelExp }));
 
     }, [playerData])
+
+    useEffect(() => {
+        if (step === 3) {
+            // const newPlayer = updatePlayer(data);
+            setPlayerState(createPlayer);
+            startGame();
+        }
+    }, [createPlayer]);
 
     const renderClassesSelection = () => {
         let classSelection = []
@@ -99,6 +108,7 @@ const CreateCharacter = ({ startGame, savePlayerData }) => {
     const handleUpdateClassData = (data) => {
         setCreatePlayer(prevState => ({ ...prevState, ...data }))
     }
+
     const checkErrors = () => {
         let error = false;
         switch (step) {
@@ -129,22 +139,20 @@ const CreateCharacter = ({ startGame, savePlayerData }) => {
     }
     const handleNextStep = () => {
         const error = checkErrors();
-        if (step < 3) {
-            if (!error) {
-                setStep(step + 1);
-                setErrors({});
-            }
-        } else {
-            savePlayerData(createPlayer)
-            startGame();
+        if (!error) {
+            setStep(step + 1);
+            setErrors({});
         }
-
     }
 
     const handlePrevStep = () => {
         setStep(step - 1);
     }
 
+    const handleCreate = (data) => {
+        handleUpdateClassData({ stats: data });
+    }
+    console.log('createPlayer', createPlayer)
     return (
         <div className='create-character'>
             <div className='create-character__title'>
@@ -182,16 +190,23 @@ const CreateCharacter = ({ startGame, savePlayerData }) => {
                     {
                         step === 3 &&
                         <div className='character-stats'>
-                            <BounusStatsPointScreen stats={createPlayer.stats} handleUpdateClassData={handleUpdateClassData} />
+                            <BounusStatsPointScreen
+                                stats={createPlayer.stats}
+                                handleUpdateClassData={handleUpdateClassData}
+                                handleCreate={handleCreate}
+                                handlePrevStep={handlePrevStep} />
                         </div>
                     }
                     <div><p className='error'>{errors.error}</p></div>
-                    <div className='btn-group'>
-                        {step > 1 &&
-                            <button className='btn bg-green' onClick={handlePrevStep} style={{ marginRight: '10px' }}>Back</button>
-                        }
-                        <button type='submit' className='btn bg-green' onClick={handleNextStep}>Next</button>
-                    </div>
+                    {
+                        step < 3 &&
+                        <div className='btn-group'>
+                            {step > 1 &&
+                                <button className='btn bg-green' onClick={handlePrevStep} style={{ marginRight: '10px' }}>Back</button>
+                            }
+                            <button type='submit' className='btn bg-green' onClick={handleNextStep}>Next</button>
+                        </div>
+                    }
                 </div>
 
                 {/* <div className='btn-group'>
